@@ -1,0 +1,31 @@
+{
+  "name": "cypress-adv",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "cypress run --headless && dev",
+    "triggerAllTests-headless": "npx cypress run",
+    "triggerAllTests-headed": "npx cypress run --headed",
+    "triggerAllTests-chrome": "npx cypress --browser chrome",
+    "triggerAllTests-dashboard": "npx cypress run --record --key 2343987 --parallel",
+    "triggerAllTests-specific-folder": "npx cypress run --spec cypress/e2e/Web-driver-Uni/*",
+    "cross-browser-test-run": "npm run triggerAllTests-specific-folder -- --browser electron --headed & npm run triggerAllTests-specific-folder -- --browser edge --headed"
+
+  },
+  "dependencies": {
+    "cypress": "^12.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "vite": "^3.1.0"
+  }
+}
