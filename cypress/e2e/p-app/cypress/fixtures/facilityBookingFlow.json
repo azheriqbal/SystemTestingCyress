@@ -1,0 +1,18 @@
+{
+  "data": {
+    "clinic": {
+      "id": "1",
+      "physicalTherapySpecialtyOptions": [
+        "hand_or_upper_extremity",
+        "pelvic_floor",
+        "lymphedema"
+      ],
+      "therapyTypeOptions": [
+        "physical_therapy",
+        "occupational_therapy",
+        "speech"
+      ],
+      "__typename": "Clinic"
+    }
+  }
+}

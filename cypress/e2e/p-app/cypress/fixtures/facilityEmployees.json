@@ -1,0 +1,76 @@
+{
+  "data": {
+    "clinic": {
+      "id": "1",
+      "employees": [
+        {
+          "id": "1",
+          "firstName": "Example",
+          "lastName": "Provider 1",
+          "email": "example+provider1@betterpt.com",
+          "phone": "9999999999",
+          "hasValidatedMobileNumber": false,
+          "role": "admin",
+          "hasLoggedIn": true,
+          "isTherapist": true,
+          "isManagedViaYext": false,
+          "clinics": [
+            {
+              "id": "1",
+              "clinicName": "Example Clinic 1",
+              "displayName": "Example Clinic 1",
+              "__typename": "Clinic"
+            },
+            {
+              "id": "2",
+              "clinicName": "Example Clinic 2",
+              "displayName": "Example Clinic 2",
+              "__typename": "Clinic"
+            },
+            {
+              "id": "3",
+              "clinicName": "Example Clinic 3",
+              "displayName": "Example Clinic 3",
+              "__typename": "Clinic"
+            }
+          ],
+          "__typename": "Employee"
+        },
+        {
+          "id": "2",
+          "firstName": "Example",
+          "lastName": "Provider 2",
+          "email": "example+provider2@betterpt.com",
+          "phone": null,
+          "hasValidatedMobileNumber": false,
+          "role": "owner",
+          "hasLoggedIn": true,
+          "isTherapist": true,
+          "isManagedViaYext": false,
+          "clinics": [
+            {
+              "id": "1",
+              "clinicName": "Example Clinic 1",
+              "displayName": "Example Clinic 1",
+              "__typename": "Clinic"
+            },
+            {
+              "id": "2",
+              "clinicName": "Example Clinic 2",
+              "displayName": "Example Clinic 2",
+              "__typename": "Clinic"
+            },
+            {
+              "id": "3",
+              "clinicName": "Example Clinic 3",
+              "displayName": "Example Clinic 3",
+              "__typename": "Clinic"
+            }
+          ],
+          "__typename": "Employee"
+        }
+      ],
+      "__typename": "Clinic"
+    }
+  }
+}

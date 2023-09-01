@@ -1,0 +1,39 @@
+{
+  "data": {
+    "contacts": {
+      "result": [
+        {
+          "id": "1",
+          "clinicId": "1",
+          "firstName": "Example",
+          "lastName": "Patient",
+          "email": "example+patient@betterpt.com",
+          "phone": "8888888888",
+          "dateOfBirth": null,
+          "archivedAt": null,
+          "hasValidatedMobileNumber": false,
+          "secondaryDescription": null,
+          "secondaryEmail": null,
+          "secondaryPhone": null,
+          "hasValidatedSecondaryMobileNumber": false,
+          "patientId": "1",
+          "clinic": {
+            "clinicName": "Example Clinic",
+            "displayName": "Example Clinic",
+            "id": "1",
+            "__typename": "Clinic"
+          },
+          "__typename": "Contact"
+        }
+      ],
+      "pager": {
+        "limit": 10,
+        "offset": 0,
+        "count": 1,
+        "total": 1,
+        "__typename": "ListPager"
+      },
+      "__typename": "ContactsOutput"
+    }
+  }
+}

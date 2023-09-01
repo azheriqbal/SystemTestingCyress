@@ -1,0 +1,12 @@
+{
+  "data": {
+    "updateAppointmentConfirmationStatus": {
+      "id": "1",
+      "confirmationStatus": "confirmed",
+      "confirmedTime": "2021-08-11T13:00:00.000Z",
+      "denialReason": null,
+      "denialExplanation": null,
+      "__typename": "Appointment"
+    }
+  }
+}

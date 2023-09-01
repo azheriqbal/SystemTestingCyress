@@ -1,0 +1,14 @@
+{
+  "data": {
+    "createContact": {
+      "id": "1",
+      "clinicId": "1",
+      "firstName": "Example",
+      "lastName": "Patient",
+      "email": "example+patient@betterpt.com",
+      "phone": "8888888888",
+      "dateOfBirth": "1989-04-26",
+      "__typename": "Contact"
+    }
+  }
+}

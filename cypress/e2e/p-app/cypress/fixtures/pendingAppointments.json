@@ -1,0 +1,21 @@
+{
+  "data": {
+    "pendingAppointments": {
+      "result": [
+        {
+          "id": "1",
+          "clinicId": "1",
+          "startTime": "2021-08-11T13:00:00.000Z",
+          "createdAt": "2021-07-26T16:28:38.386Z",
+          "clinic": {
+            "id": "1",
+            "clinicName": "Example Clinic 1",
+            "__typename": "PublicClinic"
+          },
+          "__typename": "Appointment"
+        }
+      ],
+      "__typename": "AppointmentsOutput"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "data": {
+    "appointmentType": {
+      "id": "1",
+      "companyId": "1",
+      "isActive": true,
+      "displayName": "In-Person Initial Evaluation",
+      "duration": 60,
+      "interval": 15,
+      "medium": "inClinic",
+      "shouldHideProviderOption": false,
+      "customFormTemplate": null,
+      "customFormUISchemaTemplate": null,
+      "legacyIsInitialEval": true,
+      "shouldRequireManualInsurance": true,
+      "shouldHideFinalCheckbox": true,
+      "clinics": [],
+      "employees": [],
+      "__typename": "CompanyAppointmentType"
+    }
+  }
+}

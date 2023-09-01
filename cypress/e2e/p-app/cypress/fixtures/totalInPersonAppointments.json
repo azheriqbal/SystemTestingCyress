@@ -1,0 +1,11 @@
+{
+  "data": {
+    "inPersonAppointments": {
+      "pager": {
+        "total": 2,
+        "__typename": "ListPager"
+      },
+      "__typename": "AppointmentsOutput"
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "data": {
+    "company": {
+      "id": "1",
+      "clinicBillingCount": {
+        "totalSubscribedClinics": 3,
+        "totalSubscribedPilotClinics": 0,
+        "totalSubscribedPartnerClinics": 0,
+        "totalSubscribedHSSClinics": 0,
+        "totalTelehealthClinics": 3,
+        "__typename": "CompanyClinicBillingCount"
+      },
+      "billingOverview": {
+        "id": "1",
+        "billingPartnership": null,
+        "billingContactEmail": "example+billing@betterpt.com",
+        "billingContactFirstName": "Example",
+        "billingContactLastName": "Billing",
+        "cardLastFourDigit": "4242",
+        "cardholderName": "Example P Billing",
+        "hasAgreedToSubscriptionTermsForTransactionalSub": true,
+        "isInvoiceBillingActiveForTransactionalSub": false,
+        "isInvoiceBillingActiveForPrepaidSub": false,
+        "isArchiveOptionActive": true,
+        "isAllowedToAddHSSClinics": false,
+        "hasAgreedToSubscriptionTermsForPrepaidSub": true,
+        "upcomingPrepaidInvoiceAmount": null,
+        "upcomingTransactionalInvoiceAmount": 0,
+        "defaultTelehealthTerms": "you will be billed $3 for the first 100 successful calls completed, $2 for the next 100 successful calls completed, and $0.99 for every successful call completed after that.",
+        "defaultRecordingTerms": "you will be billed an additional $3.99 for each successful call recorded.",
+        "defaultSchedulingTerms": "you will be billed $150 per active/premium clinic per month on BetterPT",
+        "hasValidBillingMethodForPrepaidSub": true,
+        "hasValidBillingMethodForTransactionalSub": true,
+        "prepaidSubscriptionPlans": [
+          {
+            "id": "1",
+            "externalDisplayName": "Standard - $150",
+            "externalDescription": null,
+            "pricePerUnit": 15000,
+            "billingUnitDivisor": null,
+            "billingMonthInterval": 1,
+            "mostRecentBillableQuantity": 14,
+            "billableQuantityLastUpdatedAt": "2021-05-04T00:01:35.809Z",
+            "product": {
+              "id": "1",
+              "displayName": "BetterScheduling",
+              "billingUnit": "location",
+              "subscriptionCategory": "prepaid",
+              "type": "scheduling",
+              "__typename": "Product"
+            },
+            "__typename": "SubscriptionPlan"
+          }
+        ],
+        "transactionalSubscriptionPlans": [
+          {
+            "id": "1",
+            "externalDisplayName": "$2 Per Recording",
+            "externalDescription": "Every recording is $2",
+            "pricePerUnit": 2,
+            "billingUnitDivisor": 1,
+            "billingMonthInterval": 1,
+            "mostRecentBillableQuantity": 0,
+            "billableQuantityLastUpdatedAt": "2021-08-05T06:01:34.620Z",
+            "product": {
+              "id": "1",
+              "displayName": "BetterPT - Telehealth Recording\n",
+              "billingUnit": "call",
+              "subscriptionCategory": "transactional",
+              "type": "recording",
+              "__typename": "Product"
+            },
+            "__typename": "SubscriptionPlan"
+          },
+          {
+            "id": "2",
+            "externalDisplayName": "$3 Per Call",
+            "externalDescription": "Every call is $3",
+            "pricePerUnit": 3,
+            "billingUnitDivisor": 1,
+            "billingMonthInterval": 1,
+            "mostRecentBillableQuantity": 0,
+            "billableQuantityLastUpdatedAt": "2021-08-05T06:01:34.620Z",
+            "product": {
+              "id": "2",
+              "displayName": "BetterPT - Telehealth",
+              "billingUnit": "call",
+              "subscriptionCategory": "transactional",
+              "type": "telehealth",
+              "__typename": "Product"
+            },
+            "__typename": "SubscriptionPlan"
+          }
+        ],
+        "__typename": "CompanyBillingOverview"
+      },
+      "__typename": "Company"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "data": {
+    "companyListItems": [
+      {
+        "id": "1",
+        "name": "Example Provider 1",
+        "type": null,
+        "__typename": "CompanyListItem"
+      },
+      {
+        "id": "2",
+        "name": "Example Provider 2",
+        "type": null,
+        "__typename": "CompanyListItem"
+      }
+    ]
+  }
+}

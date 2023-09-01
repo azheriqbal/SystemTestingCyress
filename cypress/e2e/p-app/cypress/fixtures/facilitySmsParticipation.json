@@ -1,0 +1,12 @@
+{
+  "data": {
+    "clinic": {
+      "id": "1",
+      "bookingConfig": {
+        "isSMSBetaParticipant": false,
+        "__typename": "ClinicBookingConfig"
+      },
+      "__typename": "Clinic"
+    }
+  }
+}

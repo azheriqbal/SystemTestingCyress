@@ -1,0 +1,3948 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+input ActivateCompanyIntegrationInput {
+  companyId: ID!
+  integrationId: ID!
+  updateFrequency: Int!
+  emrId: ID
+}
+
+input ActivateTableauForEmployeeInput {
+  employeeId: ID!
+  email: String!
+}
+
+type ActivityLog {
+  id: ID!
+  eventName: appointmentActivityLogsEventName!
+  performedBy: appointmentActivityLogPerformedBy!
+  performedByEmployeeRole: performedByEmployeeRole
+  performedByEmployeeId: ID
+  performedByEmployee: Employee
+  additionalInfo: JSONObject
+  videoAppointmentId: ID
+  appointmentId: ID
+  companyId: ID!
+  patientId: ID
+  patient: Patient
+  clinicId: ID!
+  clinic: PublicClinic
+  contactId: ID
+  contact: Contact
+  therapistEmployeeId: ID
+  therapistEmployee: Employee
+  assignedEmployeeId: ID
+  assignedEmployee: Employee
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ActivityLogItem {
+  type: ActivityLogItemType
+  message: String
+  time: DateTime
+}
+
+enum ActivityLogItemType {
+  appointmentConfirmed
+  appointmentCancelled
+  appointmentRescheduled
+  appointmentRequestContacted
+  appointmentCreated
+  alternateTextResponseSent
+  subscriptionChanged
+}
+
+input AddArchivePlanToTransactionalSubscriptionInput {
+  companyId: ID!
+  hasAgreedToArchivePlanTerms: Boolean!
+  archivePlanId: ID
+}
+
+input AddClinicPlansInput {
+  clinicId: ID!
+  planIds: [ID!]
+}
+
+input AddClinicToNetworkInput {
+  networkId: ID!
+  clinicIds: [ID!]!
+}
+
+input AddMessageToConversationInput {
+  conversationId: ID!
+  text: String!
+}
+
+input AddNetworksToClinicInput {
+  clinicId: ID!
+  networkIds: [ID!]!
+}
+
+input AddOrUpdatePrepaidSchedulingPlanInput {
+  companyId: ID!
+  isInvoiceBillingActiveForPrepaidSub: Boolean!
+  prepaidPlanId: ID!
+  isAllowedToAddHSSClinics: Boolean
+  invoiceBillingDaysToPay: Int
+}
+
+input AddPrepaidSchdulingPlanInput {
+  companyId: ID!
+  hasAgreedToPrepaidSubscriptionTerms: Boolean!
+  isCompanyAllowedToAddHSSClinics: Boolean
+}
+
+type Address {
+  address: String!
+  address2: String
+  city: String!
+  state: String!
+  zipcode: String!
+  country: String
+  formattedAddress: String!
+  lat: Float!
+  lng: Float!
+  coordinates: GeoPoint
+}
+
+input AddTransactionalTelehealthPlanInput {
+  companyId: ID!
+  hasAgreedToTransactionalPlanTerms: Boolean!
+  transactionalPlanId: ID
+  isInvoiceBillingActiveForTransactionalSub: Boolean
+  transactionalInvoiceDaysToPay: Int
+}
+
+input AddUserEventToVideoRoomInput {
+  videoRoomUid: ID!
+  userCode: String
+  eventType: VideoRoomUserEventType!
+  patientAcceptedConsentForm: Boolean
+  starRating: Int
+  comment: String
+  version: String
+  connectionMOS: Int
+  audioBitrate: Int
+  videoBitrate: Int
+  isCameraEnabled: Boolean
+  isAudioEnabled: Boolean
+  browser: String
+  device: String
+}
+
+input AdminAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  start: Date
+  end: Date
+  order: Order! = DESC
+  query: String
+  clinicIds: [ID]
+  employeeIds: [ID]
+  patientId: ID
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  companyId: ID
+}
+
+enum AlternateTimeResponseStatus {
+  confirmed
+  needsFollowUp
+  requestedNewTime
+}
+
+""" For 'clinic app' analytics dashboard """
+type AnalyticsAppointment {
+  id: ID!
+  createdAt: DateTime!
+  startTime: DateTime!
+  confirmedTime: DateTime
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  isDirectAccess: Boolean
+  isInitialEval: Boolean
+  timeZone: String
+  clinicId: ID
+  patientId: ID
+}
+
+input AnalyticsAppointmentInput {
+  clinicIds: [ID]
+  start: Date
+  end: Date
+}
+
+enum AppName {
+  patientWebApp
+  clinicWebApp
+  telehealthWebApp
+  telehealthMobileApp
+}
+
+""" An Appointment represents an appointment with a clinic. """
+type Appointment {
+  id: ID!
+  appointmentStatus: NewAppointmentStatus
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  startTime: DateTime!
+  createdAt: DateTime!
+  isDirectAccess: Boolean
+  isInitialEval: Boolean
+  timeZone: String
+  referredBy: String
+  confirmedTime: DateTime
+  employeeTherapistId: ID
+  clinicId: ID!
+  patientId: ID
+  contactId: ID
+  patient: Patient
+  conditionId: ID
+  condition: Condition
+  isMedicare: Boolean
+  isPostOp: Boolean
+  medicalProcedureDate: Date
+  isFirstTimeAtClinic: Boolean
+
+  """ Question asked by the platform at booking request """
+  marketingQuestionResponse: String
+  clinic: PublicClinic
+  therapist: PublicTherapist
+  employee: Employee
+  contact: Contact
+  hasPossibleLead: Boolean
+  alternateTime1: DateTime
+  alternateTime2: DateTime
+  alternateTimesExpireAt: DateTime
+  hasPatientBeenContacted: Boolean
+  patientContactedAt: DateTime
+  patientContactedByEmployee: Employee
+  patientContactedByEmployeeId: ID
+  isForWorkersCompOrMVA: Boolean
+  isSMSEligible: Boolean
+  denialReason: String
+  denialExplanation: String
+  hssRegion: HSSRegion
+  physicalTherapySpecialty: String
+  therapyType: String
+  previousStartTime: DateTime
+  originalStartTime: DateTime
+  providerEmail: String
+  patientEmail: String
+  patientFirstName: String
+  patientLastName: String
+  patientPhoneNumber: String
+  alternateTimeResponseStatus: AlternateTimeResponseStatus
+  otherExplanation: String
+  wasRequested: Boolean
+  cancelledAt: Date
+  appointmentTypeId: ID
+  appointmentType: CompanyAppointmentType
+  patientActionableReminderStatus: String
+  patientActionableReminderSentAt: DateTime
+  confirmedAt: DateTime
+  customFormResponse: JSONObject
+  assignedEmployeeId: ID
+  assignedEmployee: Employee
+  lastActivityLog: ActivityLog
+  activityLogs: [ActivityLog]!
+  activityLog: [ActivityLogItem]
+}
+
+enum appointmentActivityLogPerformedBy {
+  admin
+  employee
+  patient
+  system
+}
+
+enum appointmentActivityLogsEventName {
+  AppointmentAltTimeConfirmed
+  AppointmentAltTimeExpired
+  AppointmentAltTimeSent
+  AppointmentCancelledByClinic
+  AppointmentCancelledByPatient
+  AppointmentCompleted
+  AppointmentConfirmed
+  AppointmentCreatedByClinic
+  AppointmentCreatedByPatient
+  AppointmentDeclined
+  AppointmentExpired
+  AppointmentNoShow
+  AppointmentPatientContacted
+  AppointmentTelehealthLinkSent
+  AppointmentSchedulerAssigned
+  AppointmentStarttimeUpdated
+  AppointmentProviderUpdated
+}
+
+input AppointmentActivityLogsInput {
+  appointmentId: ID!
+}
+
+enum AppointmentMedium {
+  telehealth
+  inClinic
+}
+
+""" The input needed for patient to request a appointment  """
+input AppointmentRequestInput {
+  clinicId: ID!
+  appointmentTypeId: ID!
+  startTime: DateTime!
+  providerId: ID
+  availabilitySpanId: ID
+  customFormResponse: JSONObject
+  isDirectAccess: Boolean
+  referredBy: String
+}
+
+""" Output type of the Company.appointments and Clinic.appointments and Patient.appointments
+"""
+type AppointmentsOutput {
+  result: [Appointment]
+  pager: ListPager
+}
+
+""" The status of the appointment. """
+enum AppointmentStatus {
+  booked
+  cancelled
+  completed
+  noshow
+}
+
+enum AppointmentType {
+  initialEvaluation
+  followup
+}
+
+type ArchiveEvent {
+  id: ID!
+  eventTime: DateTime!
+  sessionId: String!
+  duration: Int!
+  resolution: String
+  size: Int
+  status: ArchiveStatusType
+}
+
+enum ArchiveStatusType {
+  started
+  paused
+  stopped
+  uploaded
+  available
+  expired
+  failed
+}
+
+type ArchiveSubscriptionPlan {
+  id: ID!
+  planName: String!
+  description: String
+  billingUnit: TelehealthSubscriptionBillingUnitEnum
+  billingUnitDivisor: Int
+  billingMonthInterval: Int
+}
+
+input AssignAppointmentToEmployeeInput {
+  appointmentId: ID!
+  employeeId: ID
+}
+
+input AssociateClinicWithEmployeesInput {
+  clinicId: ID!
+  employeeIds: [ID]
+}
+
+input AssociateEmployeeWithClinicsInput {
+  employeeId: ID!
+  clinicIds: [ID]
+}
+
+"""
+An AvailableDate is the next a specific date that an integrated PT or clinic is available.
+"""
+type AvailableDate {
+  id: ID
+  start: Date!
+  clinicId: ID
+  therapistId: ID
+}
+
+"""
+An AvailableDay is the next a specific date that an integrated PT or clinic is available.
+"""
+type AvailableDay {
+  id: ID
+  start: Date
+  end: Date
+  clinicId: ID
+  therapistId: ID
+}
+
+""" An AvailableSlot is a block of time that a therapist is available for an appointment request 
+"""
+type AvailableSlot {
+  source: String!
+  start: DateTime!
+  end: DateTime!
+  clinicId: ID
+  therapistId: ID
+}
+
+enum BetterAccessMigrationStatus {
+  notStarted
+  inProgress
+  complete
+  completedBookingFlowMigration
+}
+
+type BookingFlow {
+  askMedicare: Int
+  askPostOp: Int
+  askSecondaryInsurance: Int
+  askReturningPatient: Int
+  askPatientAddress: Int
+  askPreferredPatientContact: Int
+  askMarketingSource: Int
+  askWorkersCompOrMVA: Int
+  shouldUsePrecheck: Boolean
+  shouldSkipInsurancePage: Boolean
+}
+
+""" A booking that has not yet been finalized """
+type BookingSession {
+  uid: ID
+  clinicId: ID
+  therapistId: ID
+  appointmentTypeId: ID
+  startTime: DateTime
+  availabilitySpanId: ID
+  appointmentType: CompanyAppointmentType
+  customFormResponse: JSONObject
+  referredBy: String
+  isDirectAccess: Boolean
+}
+
+"""
+A Carrier is an insurance carrier. This model helps organize plans that clinics are assoicated with.
+However, Clinics do not accept "Carriers" they accept plans. 
+"""
+type Carrier {
+  id: ID!
+  name: String!
+  plans: [Plan]
+}
+
+"""
+The Clinic hold all details about a clinic that are relevant to patients on the BetterPT.com
+"""
+type Clinic {
+  id: ID!
+  appointments(input: ClinicAppointmentsInput): AppointmentsOutput
+  bookingConfig: ClinicBookingConfig
+
+  """ [ADMIN, EMPLOYEE(owner, admin)]: Queries video appointments at the clinic 
+  """
+  videoAppointments(input: ClinicVideoAppointmentsInput): VideoAppointmentsOutput
+  appointmentTypes: [CompanyAppointmentType]
+  companyId: ID
+  clinicName: String
+  location: Location
+  company: Company
+  phone: String
+  email: String
+  about: String
+  timeZone: String
+  cancellationPolicy: String
+  isHSSAffiliate: Boolean
+  avatarUrl: String
+  smallAvatarUrl: String
+  logoUrl: String
+  smallLogoUrl: String
+  betterPTSubscriptionActive: Boolean
+  isOutOfNetworkOnly: Boolean
+  insuranceLastReviewDate: String
+  visibleWithoutSub: Boolean
+  archivedAt: DateTime
+  useClinicName: Boolean
+  displayName: String
+  isIntegrated: Boolean
+  isVisible: Boolean
+  hours: ClinicHours
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  hasAlternateTimeUI: Boolean
+  employees: [Employee]
+  plans: [CompanyPlan]
+  isTelehealthActive: Boolean
+  isTemporarilyClosed: Boolean
+  patientConsentFormUrl: String
+  isInsuranceBetaParticipant: Boolean
+  npi: String
+  physicalTherapySpecialtyOptions: [TherapySpecialtyOption]
+  therapyTypeOptions: [TherapyTypeOption]
+  actionItems: ClinicActionItems
+  isBetterAccessOnly: Boolean
+  deletedAt: DateTime
+  shouldUseBABookingFlow: Boolean
+  isManagedViaYext: Boolean
+  isAppointmentCancellationAllowed: Boolean
+  hoursOfOperationNotes: String
+  shouldUseProviderSchedule: Boolean
+  shouldUseAutoconfirmedAppointments: Boolean
+  networks: [Network]
+  smsConfig: ClinicSMSConfig
+  integrationDetails: ClinicIntegrationDetails
+  notificationSettings: ClinicNotificationSettings
+  patients(input: ClinicPatientsInput): PatientsOutput
+  contacts(input: ClinicContactsInput!): ContactsOutput
+  subscriptionDetail: ClinicSubscriptionDetail
+}
+
+type ClinicActionItems {
+  addInsurance: Boolean
+  updateInsurance: Boolean
+  addStaff: Boolean
+}
+
+type ClinicAdminEmalsOutput {
+  result: [String!]
+}
+
+""" The input necessary to query appointments """
+input ClinicAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  analytics: Boolean
+}
+
+type ClinicBookingConfig {
+  id: ID!
+  isIntegrated: Boolean!
+  nonIntegratedInterval: Int!
+  isTelehealthActive: Boolean!
+
+  """ Use REST for clinic hours for now"""
+  hours: ClinicHours!
+  hoursOfOperation: ClinicHourSlots
+  videoAppointmentHours: ClinicHours!
+  isSMSBetaParticipant: Boolean
+}
+
+input ClinicContactsInput {
+  limit: Int! = 20
+  offset: Int! = 0
+  query: String
+  isArchived: Boolean
+}
+
+"""
+ClinicHours contain the open and close times for a clinic. Used to generate availablites for non-integrated clinics
+"""
+type ClinicHours {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+input ClinicHoursInput {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+type ClinicHourSlots {
+  monday: [JSONObject]
+  tuesday: [JSONObject]
+  wednesday: [JSONObject]
+  thursday: [JSONObject]
+  friday: [JSONObject]
+  saturday: [JSONObject]
+  sunday: [JSONObject]
+}
+
+input ClinicHourSlotsInput {
+  monday: [JSONObject]
+  tuesday: [JSONObject]
+  wednesday: [JSONObject]
+  thursday: [JSONObject]
+  friday: [JSONObject]
+  saturday: [JSONObject]
+  sunday: [JSONObject]
+}
+
+""" FEDERATED - Company integration details which has related to emr info"""
+type ClinicIntegrationDetails {
+  id: ID!
+  isEligibleForIntegration: Boolean!
+
+  """The ID of the Clinic in the EMR"""
+  emrId: String
+
+  """
+  The ID of the DB that the clinic belongs to in the EMR (if different than company level db)
+  """
+  emrDatabaseId: String
+  webPTFacilityId: String
+  currentFormatOfWebPTSchedulingLinkForClinic: String
+  lastWebPTSchedulingLinkSentToWebPT: String
+  webPTSchedulingLinkLastUpdatedAt: DateTime
+  integrationDuration: Int
+  integrationInterval: Int
+  integrationFollowupDuration: Int
+  integrationFollowupInterval: Int
+  isIntegrationConfigurationAtClinicLevel: Boolean
+
+  """Boolean for disabling cancellation and reschedule buttons"""
+  canCancelRequests: Boolean
+  shouldBlockCancellations: Boolean
+  kno2Address: String
+}
+
+input ClinicLocationInput {
+  clinicId: ID!
+  address: String!
+  address2: String
+  city: String!
+  state: String!
+  country: String
+  zipcode: String!
+  serviceAreaName: String
+  lat: String
+  lng: String
+  formattedAddress: String
+}
+
+type ClinicNotificationSettings {
+  id: ID!
+  notificationEmail: String
+  shouldDisableInPersonReminderEmails: Boolean
+}
+
+input ClinicPatientsInput {
+  limit: Int! = 20
+  offset: Int! = 0
+  query: String
+}
+
+input ClinicsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  query: String
+  isIntegrated: Boolean
+  isArchived: Boolean
+  isTelehealthActive: Boolean
+  isSubscriptionActive: Boolean
+  networkIds: [ID]
+  isVisibleWithoutSub: Boolean
+  companyId: ID
+}
+
+type ClinicSMSConfig {
+  id: ID!
+  smsPhoneNumber: String
+}
+
+"""ClinicsOutput is a paginated list that contains clinics and pager."""
+type ClinicsOutput {
+  result: [Clinic]
+  pager: ListPager
+}
+
+type ClinicsQueryOutput {
+  result: [Clinic]
+  pager: ListPager
+}
+
+type ClinicSubscriptionDetail {
+  id: ID!
+  subscriptionActive: Boolean!
+  canUpgradeToTraditionalSubscription: Boolean!
+  isEligibleForTelehealthActivation: Boolean!
+  isOnTraditionalPilot: Boolean!
+  isHSSAffiliate: Boolean!
+  isTelehealthActive: Boolean!
+  isBilledExternally: Boolean!
+  externalBillingPartner: ExternalBillingPartner
+}
+
+""" The input necessary to query video appointments on clinic model """
+input ClinicVideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  status: VideoAppointmentStatus
+  confirmationStatus: VideoConfirmationStatus
+  patientId: ID
+  query: String
+}
+
+input CompaniesInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  query: String
+  isIntegrated: Boolean
+  isArchived: Boolean
+  hasBeenApproved: Boolean
+  state: String
+  healthcareVertical: HealthcareVertical
+}
+
+type CompaniesOutput {
+  result: [Company]
+  pager: ListPager
+}
+
+""" A Company is the core organization entity in BetterPT. It has both clinics and employees.
+"""
+type Company {
+  id: ID!
+  bookingFlow: BookingFlow
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager, self)]: Queries appointments at the company 
+  """
+  appointments(input: CompanyAppointmentsInput): AppointmentsOutput
+  telehealthConfig: CompanyTelehealthConfig
+  appointmentTypes: [CompanyAppointmentType]
+  createdAt: DateTime
+  location: Location
+  companyName: String
+  email: String
+  phone: String
+  website: String
+  avatarUrl: String
+  smallAvatarUrl: String
+  hasIntegration: Boolean
+  bookingFlowRedirectURL: String
+  bookingFlowHex: String
+  isBookingFlowButtonBlack: Boolean
+  telehealthPolicyText: String
+  isUsingTableau: Boolean
+  emrName: String
+  headquartersAddress: Address
+  isRecordingOptionAvailable: Boolean
+  videoHours: CompanyVideoHours
+  employees(input: CompanyEmployeesInput): EmployeesOutput
+  clinics(input: CompanyClinicsInput): ClinicsOutput
+
+  """ FRONTEND FLAG - every new employee should be created as a provider """
+  shouldNewEmployeesDefaultToProvider: Boolean
+
+  """ FRONTEND FLAG - every new facility should be designated as a 'service area' 
+  """
+  shouldFacilityDefaultToServiceArea: Boolean
+
+  """ does this company use 'admin' permissions level """
+  shouldPreventNewAdminEmployees: Boolean
+
+  """ does this company use 'basic' permissions level """
+  shouldPreventNewBasicEmployees: Boolean
+  shouldUseRecordingCopyForConsent: Boolean
+  shouldAutoStartRecording: Boolean
+  shouldRequirePhoneForNewContacts: Boolean
+  archivedAt: DateTime
+  hasBeenApproved: Boolean
+  taxId: String
+  providerAppId: String
+  isDemoAccount: Boolean
+  useClinicNameForMetadata: Boolean
+  shouldRemoveCallLengthLimit: Boolean
+  healthcareVertical: HealthcareVertical
+  usesExternalIDP: Boolean
+  betterAccessMigrationStatus: BetterAccessMigrationStatus
+  externalDataPlatformLink: String
+  activityLog: [ActivityLogItem]
+  integrationDetails: CompanyIntegrationDetails
+  clinicBillingCount: CompanyClinicBillingCount!
+  invoiceHistory: CompanyInvoiceHistoryOutput!
+  chargeHistory(input: CompanyChargeInput): [CompanyCharge]
+  stripeBillingProfile: StripeBillingProfile
+  billingOverview: CompanyBillingOverview
+  reviewConfig: ReviewConfig
+}
+
+""" The input necessary to query appointments on company model """
+input CompanyAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  analytics: Boolean
+  clinicIds: [ID]
+}
+
+type CompanyAppointmentType {
+  id: ID!
+  displayName: String!
+  duration: Int!
+  interval: Int!
+  companyId: ID!
+  medium: AppointmentMedium!
+  clinics: [Clinic]
+  employees: [Employee]
+  isActive: Boolean!
+  customFormTemplate: JSONObject
+  customFormUISchemaTemplate: JSONObject
+  legacyIsInitialEval: Boolean
+  shouldRequireManualInsurance: Boolean
+  shouldHideProviderOption: Boolean
+  shouldHideFinalCheckbox: Boolean
+  emrAppointmentTypeId: String
+}
+
+""" FEDERATED - detail for company subscription """
+type CompanyBillingOverview {
+  id: ID
+  billingContactFirstName: String
+  billingContactLastName: String
+  billingContactEmail: String
+  hasValidCreditCard: Boolean!
+  cardLastFourDigit: String
+  cardholderName: String
+  defaultTelehealthTerms: String
+  defaultRecordingTerms: String
+  defaultSchedulingTerms: String
+  isAllowedToAddHSSClinics: Boolean
+  isArchiveOptionActive: Boolean!
+  hasAgreedToSubscriptionTermsForTransactionalSub: Boolean!
+  isInvoiceBillingActiveForTransactionalSub: Boolean!
+  hasValidBillingMethodForTransactionalSub: Boolean!
+  transactionalInvoiceDaysToPay: Int
+  transactionalSubscriptionMonthlyInterval: Int
+  transactionalSubscriptionPlans: [SubscriptionPlan]
+  upcomingTransactionalInvoiceAmount: Int
+  hasAgreedToSubscriptionTermsForPrepaidSub: Boolean!
+  isInvoiceBillingActiveForPrepaidSub: Boolean!
+  hasValidBillingMethodForPrepaidSub: Boolean!
+  prepaidInvoiceDaysToPay: Int
+  prepaidSubscriptionMonthlyInteval: Int
+  prepaidSubscriptionPlans: [SubscriptionPlan]
+  upcomingPrepaidInvoiceAmount: Int
+  totalNumberOfClinicsOwned: Int
+  billingPartnership: String
+  pricingCategory: String
+  billingPackage: CompanyBillingPackage
+  size: CompanySizeForBilling
+  companyType: CompanyTypeForBilling
+  percentFromBaseline: Int
+}
+
+enum CompanyBillingPackage {
+  grandfathered
+  basic
+  standard
+  enterprise
+  ultimate
+}
+
+""" Carrier is a type which in other works means Insurance Carrier. Example: Aetna, Blue Shield blue Cross
+"""
+type CompanyCarrier {
+  id: ID!
+  name: String!
+  plans: [CompanyPlan]
+  cardImageURL: String
+  cardDisplayText: String
+  cardRank: Int
+}
+
+type CompanyCharge {
+  chargeId: String
+  paymentAmount: Int!
+  description: String
+  dateCharged: DateTime
+  isPaid: Boolean
+  isRefunded: Boolean
+  receiptUrl: String
+  invoiceId: String
+  refundedAt: DateTime
+}
+
+input CompanyChargeInput {
+  limit: Int! = 20
+  createdAfter: DateTime
+}
+
+type CompanyClinicBillingCount {
+  totalSubscribedClinics: Int
+  totalSubscribedPilotClinics: Int
+  totalSubscribedPartnerClinics: Int
+  totalSubscribedHSSClinics: Int
+  totalTelehealthClinics: Int
+}
+
+input CompanyClinicsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  query: String
+  clinicIds: [ID]
+}
+
+input CompanyEmployeesInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  query: String
+  roles: [String]
+  isTherapist: Boolean
+  employeeIds: [ID]
+}
+
+""" FEDERATED - Company integration details which has related to emr info"""
+type CompanyIntegrationDetails {
+  id: ID!
+  hasIntegration: Boolean!
+
+  """Does the company have multiple databases instances of the same EMR?"""
+  hasMultipleEMRDatabases: Boolean!
+  updateFrequency: Int!
+  hasSingleSlotAvailabilities: Boolean!
+  integrationDuration: Int
+  integrationInterval: Int
+  integrationFollowupDuration: Int
+  integrationFollowupInterval: Int
+  emrId: String
+  integration: Integration
+  kno2Address: String
+
+  """WebPT Integration"""
+  webPTReachAPIKey: String
+  isWebPTReachLeadSyncingActive: Boolean!
+
+  """DialogHealth Integration"""
+  dialogHealthId: String
+}
+
+type CompanyInvoiceHistoryOutput {
+  recentTransactionalInvoices: [Invoice]
+  recentPrepaidInvoices: [Invoice]
+  upcomingPrepaidInvoice: Invoice
+  upcomingTransactionalInvoice: Invoice
+}
+
+type CompanyListItem {
+  id: ID!
+  type: CompanyListItemTypeEnum
+  name: String
+}
+
+input CompanyListItemInput {
+  companyId: ID!
+  type: CompanyListItemTypeEnum!
+}
+
+enum CompanyListItemTypeEnum {
+  clinic
+  employee
+}
+
+type CompanyListOption {
+  id: ID!
+  type: CompanyListOptionType
+  name: String
+  timeZone: String
+}
+
+input CompanyListOptionInput {
+  companyId: ID!
+  type: CompanyListOptionType!
+}
+
+enum CompanyListOptionType {
+  telehealth_facilities
+  in_person_facilities
+  providers
+  providers_at_my_facilities
+}
+
+input CompanyLocationInput {
+  companyId: ID!
+  address: String!
+  address2: String
+  city: String!
+  state: String!
+  country: String
+  zipcode: String!
+  lat: String
+  lng: String
+  formattedAddress: String
+}
+
+"""
+A CompanyPlan is the the specific plan an insurance carrier has and that a clinic accepts
+"""
+type CompanyPlan {
+  id: ID!
+  planName: String!
+  carrierId: ID!
+  carrier: CompanyCarrier!
+}
+
+enum CompanySizeForBilling {
+  smb
+  midMarket
+  midEnterprise
+  enterprise
+}
+
+type CompanyTelehealthConfig {
+  id: ID!
+  shouldAutoStartRecording: Boolean
+  shouldUseRecordingCopyForConsent: Boolean
+  shouldRemoveCallLengthLimit: Boolean
+  shouldAllowSecondaryProvider: Boolean
+  shouldRedirectPatientEmailToSecondaryProvider: Boolean
+  shouldSendPatientActionableReminder: Boolean
+}
+
+enum CompanyTypeForBilling {
+  hospitalNetwork
+}
+
+""" The input necessary to query video appointments on company model """
+input CompanyVideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  status: AppointmentStatus
+  confirmationstatus: ConfirmationStatus
+  patientId: ID
+}
+
+"""
+VideoHours contain the open and close times for appointments at a company.
+"""
+type CompanyVideoHours {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+""" A Condition is associated with an appointment and may contain a description. 
+"""
+type Condition {
+  id: ID!
+  patientId: ID
+  injuries: [Injury]
+  appointments: [Appointment]
+  createdAt: DateTime
+}
+
+""" The confirmation status of the appointment. """
+enum ConfirmationStatus {
+  pending
+  confirmed
+  denied
+}
+
+""" Confirmation Status for confirming appointmet"""
+enum ConfirmOrDenyStatus {
+  confirmed
+  denied
+}
+
+input ConsentFormUploadInput {
+  filename: String!
+  mimetype: String!
+}
+
+type Contact {
+  id: ID!
+  clinicId: ID!
+  patientId: ID
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  dateOfBirth: Date
+  archivedAt: DateTime
+  hasValidatedMobileNumber: Boolean
+  clinic: Clinic
+  secondaryDescription: String
+  secondaryPhone: String
+  secondaryEmail: String
+  hasValidatedSecondaryMobileNumber: Boolean
+  patient: Patient
+}
+
+input ContactsInput {
+  limit: Int! = 20
+  offset: Int! = 0
+  query: String
+  clinicIds: [ID]
+  isArchived: Boolean
+  contactIds: [ID]
+}
+
+type ContactsOutput {
+  result: [Contact]
+  pager: ListPager
+}
+
+type Conversation {
+  id: ID!
+  messages: [Message]
+  clinicId: ID!
+  patientPhone: String!
+  patientName: String
+  mostRecentMessage: Message
+  archivedAt: Date
+}
+
+input CopyInsuranceFromMainClinicToSelectedClinicsInput {
+  mainClinicId: ID!
+  clinicIds: [ID!]
+}
+
+input CreateAppointmentTypeInput {
+  companyId: ID!
+  displayName: String!
+  duration: Int!
+  interval: Int!
+  medium: AppointmentMedium!
+  legacyIsInitialEval: Boolean
+  shouldRequireManualInsurance: Boolean
+  shouldHideProviderOption: Boolean
+  shouldHideFinalCheckbox: Boolean
+  customFormTemplate: JSONObject
+}
+
+""" The input necessary to create an Appointment with an integrated Clinic. 
+"""
+input CreateAppointmentWithIntegratedClinicInput {
+  clinicId: ID!
+  startTime: DateTime!
+  therapistId: ID!
+  source: String!
+  isInitialEval: Boolean!
+  referredBy: String
+  conditionId: ID
+  isDirectAccess: Boolean!
+  isMedicare: Boolean
+  isPostOp: Boolean
+  medicalProcedureDate: Date
+  isFirstTimeAtClinic: Boolean
+
+  """ Question asked by the platform at booking request """
+  marketingQuestionResponse: String
+  isForWorkersCompOrMVA: Boolean
+  physicalTherapySpecialty: String
+  therapyType: String
+  otherExplanation: String
+}
+
+""" The input necessary to create an Appointment with a non-integrated Clinic. 
+"""
+input CreateAppointmentWithNonIntegratedClinicInput {
+  clinicId: ID!
+  startTime: DateTime!
+  isInitialEval: Boolean!
+  referredBy: String
+  conditionId: ID
+  isDirectAccess: Boolean!
+  isMedicare: Boolean
+  isPostOp: Boolean
+  medicalProcedureDate: Date
+  isFirstTimeAtClinic: Boolean
+
+  """ Question asked by the platform at booking request """
+  marketingQuestionResponse: String
+  isForWorkersCompOrMVA: Boolean
+  hssRegion: HSSRegion
+  physicalTherapySpecialty: String
+  therapyType: String
+  otherExplanation: String
+}
+
+input CreateAvailabilityBlockInput {
+  startTime: Date!
+  endTime: Date!
+  clinicId: ID!
+  therapistId: ID!
+}
+
+input CreateBetterPTVideoRoomInput {
+  startTime: DateTime!
+  timeZone: String!
+  clinicId: ID!
+  videoAppointmentUid: ID!
+  hasUnlimitedSessionLength: Boolean
+  shouldRecordingAutoStart: Boolean
+}
+
+input CreateCarrierInput {
+  name: String!
+}
+
+input CreateClinicAppointmentWithTherapistAndPatientInput {
+  clinicId: ID!
+  patientId: ID!
+  therapistId: ID!
+  startTime: DateTime!
+}
+
+input CreateClinicInput {
+  companyId: ID!
+  clinicName: String!
+  address: String!
+  address2: String
+  city: String!
+  state: String!
+  zipcode: String!
+  phone: String!
+  email: String!
+  cancellationPolicy: String
+  country: String
+  fax: String
+  about: String
+  npi: String
+  useClinicName: Boolean
+}
+
+""" The input needed for employee to create a video appointment  """
+input CreateClinicVideoAppointmentInput {
+  clinicId: ID!
+  startTime: DateTime!
+  employeeId: ID
+  providerEmail: String
+  patientEmail: String
+  patientFirstName: String
+  patientLastName: String
+  patientPhoneNumber: String
+}
+
+input CreateClinicWithServiceAreaInput {
+  companyId: ID!
+  clinicName: String!
+  serviceAreaName: String!
+  city: String!
+  state: String!
+  cancellationPolicy: String
+  about: String
+}
+
+input CreateCompanyEmployeeInput {
+  companyId: ID!
+  email: String!
+  role: Role!
+  isTherapist: Boolean!
+  firstName: String!
+  lastName: String!
+  gender: Gender!
+  birthday: Date
+  phone: String
+  degreeOrCertification: String
+  yearsExperience: Date
+  bio: String
+  shouldSendInvite: Boolean
+}
+
+""" The input necessary to create a condition. """
+input CreateConditionInput {
+  injuryIds: [ID]
+}
+
+input CreateContactFromCSVInput {
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  dateOfBirth: Date
+}
+
+input CreateContactInput {
+  clinicId: ID!
+  firstName: String!
+  lastName: String!
+  email: String
+  phone: String
+  dateOfBirth: Date
+  overrideDuplicationWarning: Boolean
+}
+
+input CreateContactsFromCSVInput {
+  contacts: [CreateContactFromCSVInput]!
+  clinicId: ID!
+}
+
+input CreateConversationInput {
+  clinicId: ID!
+  patientPhone: String!
+  patientName: String
+}
+
+input CreateDeviceInformationInput {
+  email: String!
+  deviceToken: String!
+}
+
+input CreateEmployeesFromCSVInput {
+  companyId: ID!
+  employees: [EmployeeFromCSVInput]!
+}
+
+input CreateFlogInput {
+  appName: AppName!
+  message: String!
+  level: LogLevel!
+  payload: JSONObject
+}
+
+input CreateInPersonAppointmentInput {
+  clinicId: ID!
+  contactId: ID!
+  employeeId: ID!
+  startTime: DateTime!
+  appointmentTypeId: ID
+}
+
+input CreateNetworkInput {
+  displayName: String!
+  category: NetworkCategoriesEnum!
+  about: String
+  companyId: ID
+}
+
+input CreateNewProductPricingPlanInput {
+  productId: ID!
+  displayName: String!
+  price: Int!
+  billingMonthInterval: Int!
+  description: String
+}
+
+""" A booking that has not yet been finalized """
+input CreateOrUpdateBookingSessionInput {
+  uid: ID
+  clinicId: ID
+  therapistId: ID
+  appointmentTypeId: ID
+  startTime: DateTime
+  availabilitySpanId: ID
+  customFormResponse: JSONObject
+  referredBy: String
+  isDirectAccess: Boolean
+}
+
+""" Update or create a new prerequest """
+input CreateOrUpdatePrerequestInput {
+  uid: ID
+  clinicId: ID
+  companyId: ID
+  companyName: String
+  startTime: DateTime
+  therapistId: ID
+  source: String
+  isBrandedBooking: Boolean
+  clinicName: String
+  bookingType: String
+  conditionId: ID
+  isDirectAccess: Boolean
+  isInitialEval: Boolean
+  referredBy: String
+  isMedicare: Boolean
+  isPostOp: Boolean
+  medicalProcedureDate: Date
+  isFirstTimeAtClinic: Boolean
+
+  """ Question asked by the platform at booking request """
+  marketingQuestionResponse: String
+  isForWorkersCompOrMVA: Boolean
+  hssRegion: HSSRegion
+  physicalTherapySpecialty: String
+  therapyType: String
+  otherExplanation: String
+}
+
+"""[TELEHEALTH] The input type for the `createPartnerVideoRoom` mutation."""
+input CreatePartnerVideoRoomInput {
+  """Please see the `DateTime` type to see the exact format"""
+  startTime: DateTime!
+  timeZone: PartnerVideoRoomTimeZonesEnum!
+  displayName: String
+
+  """a unique identifer used for billing purposes"""
+  partnerCustomerId: String
+  partnerPatientEmail: String
+  partnerPatientPhone: String
+  partnerClinicName: String
+  videoRoomTermsAndConditionsURL: String
+}
+
+input CreatePatientReviewInput {
+  uid: ID!
+  physicalTherapistRating: Int
+  primaryAppointmentRating: Int
+  secondaryAppointmentRating: Int
+  comment: String
+}
+
+input CreatePlanInput {
+  carrierId: ID!
+  planName: String!
+}
+
+input CreatePlatformEndpointInput {
+  platform: Platform!
+  deviceToken: String!
+}
+
+input CreateVideoAppointmentInput {
+  clinicId: ID!
+  startTime: DateTime!
+  employeeId: ID!
+  contactId: ID!
+  appointmentTypeId: ID
+  secondaryProviderId: ID
+  shouldUseSecondaryContact: Boolean
+  recurringFrequency: FrequencyOptions
+  recurringInterval: Int
+  endDate: Date
+  shouldSkipWeekends: Boolean
+}
+
+enum csvUploadEntity {
+  employees
+  clinics
+}
+
+type CustomAppointmentSearchTemplates {
+  traditionalAppointmentSearchTemplate: JSONObject
+  telehealthAppointmentSearchTemplate: JSONObject
+}
+
+scalar Date
+
+""" A RFC 3339 compliant date/time scalar type. Example: 2020-12-03T10:15:30Z 
+"""
+scalar DateTime
+
+input DeleteClinicsInput {
+  companyId: ID!
+  clinicIds: [ID]
+}
+
+""" Reason for which appoitment is denied """
+enum DenialReason {
+  insurance
+  time
+  location
+  other
+}
+
+"""A patient's device information"""
+type DeviceInformation {
+  id: ID
+  deviceToken: String
+  email: String
+}
+
+input DisassociateClinicWithEmployeesInput {
+  clinicId: ID!
+  employeeIds: [ID]
+}
+
+input DisassociateEmployeeWithClinicsInput {
+  employeeId: ID!
+  clinicIds: [ID]
+}
+
+type Download {
+  id: ID!
+  uid: ID
+  type: DownloadType
+  companyId: ID
+  employeeId: ID
+  numberOfRecords: Int
+  s3URL: String
+  isReady: Boolean
+  expiresAt: DateTime
+  failedAttempts: Int
+  startQueryDate: Date
+  endQueryDate: Date
+  csvPath: String
+}
+
+enum DownloadType {
+  appointment
+  telehealth
+}
+
+"""An Employee is anyone that works at a Company or Clinic"""
+type Employee {
+  id: ID!
+
+  """ [ADMIN, EMPLOYEE(owner, admin)]: Queries video appointments for a specific employee 
+  """
+  videoAppointments(input: EmployeeVideoAppointmentsInput): VideoAppointmentsOutput
+  appointmentTypes: [CompanyAppointmentType]
+  companyId: ID
+  isTherapist: Boolean!
+  degreeOrCertification: String
+  yearsExperience: String
+  role: Role
+  bio: String
+  email: String
+  firstName: String
+  lastName: String
+  archivedAt: DateTime
+  hasLoggedIn: Boolean
+  gender: Gender
+  profileImgUrl: String
+  smallProfileImgUrl: String
+  hasEmailInviteBeenSent: Boolean
+  acceptEmployeeTOS: Boolean
+  acceptEmployeePrivacy: Boolean
+  isUsingTableau: Boolean
+  lastEmailInviteSentAt: DateTime
+  company: Company
+  clinics: [Clinic]
+  accountDetails: EmployeeAccountDetails
+  phone: String
+  hasValidatedMobileNumber: Boolean
+  isIntegrated: Boolean
+  isManagedViaYext: Boolean
+  alternateTelehealthContactEmail: String
+  customSearchTemplates: CustomAppointmentSearchTemplates
+  integrationDetails: EmployeeIntegrationDetails
+  notificationPreferences: NotificationPreferences
+  notifications(input: NotificationsInput): NotificationsOutput
+}
+
+type EmployeeAccountDetails {
+  username: String
+  isEnabled: Boolean
+  userStatus: String
+  preferredMFASetting: String
+}
+
+input EmployeeFromCSVInput {
+  email: String!
+  role: Role!
+  isTherapist: Boolean!
+  firstName: String!
+  lastName: String!
+  gender: Gender!
+  birthday: Date
+  phone: String
+  degreeOrCertification: String
+  yearsExperience: Date
+  bio: String
+  shouldSendInvite: Boolean
+}
+
+input EmployeeHoursAtClinicInput {
+  employeeId: ID!
+  clinicId: ID!
+}
+
+type EmployeeHourSlotsAtClinic {
+  monday: [JSONObject]
+  tuesday: [JSONObject]
+  wednesday: [JSONObject]
+  thursday: [JSONObject]
+  friday: [JSONObject]
+  saturday: [JSONObject]
+  sunday: [JSONObject]
+}
+
+input EmployeeHourSlotsAtClinicInput {
+  monday: [JSONObject]
+  tuesday: [JSONObject]
+  wednesday: [JSONObject]
+  thursday: [JSONObject]
+  friday: [JSONObject]
+  saturday: [JSONObject]
+  sunday: [JSONObject]
+}
+
+""" FEDERATED - Company integration details which has related to emr info"""
+type EmployeeIntegrationDetails {
+  id: ID!
+  isEligibleForIntegration: Boolean!
+  isActivelySyncing: Boolean!
+
+  """The ID of the Employee in the EMR"""
+  emrId: String
+
+  """
+  The ID of the DB that the employee belongs to in the EMR (if different than company level db)
+  """
+  emrDatabaseId: String
+  availabilityCount: Int
+}
+
+type EmployeeOutput {
+  result: Employee
+}
+
+type EmployeesOutput {
+  result: [Employee]
+  pager: ListPager
+}
+
+input EmployeeVideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  status: VideoAppointmentStatus
+  confirmationStatus: VideoConfirmationStatus
+  patientId: ID
+}
+
+type EmrAppointmentType {
+  emrAppointmentTypeId: String!
+  emrCompanyId: String
+  displayName: String
+  duration: Int!
+}
+
+type EmrCompany {
+  id: ID
+  name: String
+}
+
+type EmrFacility {
+  id: ID
+  name: String
+  emrCompanyId: String
+  address: String
+  address2: String
+  city: String
+  state: String
+  zipcode: String
+}
+
+type EmrProvider {
+  id: ID
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+}
+
+enum ExternalBillingPartner {
+  hss
+  clinicient
+  prompt
+  annual
+}
+
+type Flog {
+  id: ID!
+  message: String!
+  level: LogLevel!
+  appName: AppName!
+  payload: JSONObject
+}
+
+enum FrequencyOptions {
+  day
+  week
+}
+
+enum Gender {
+  M
+  F
+}
+
+scalar GeoPoint
+
+input GetTableauTokenForEmployeeInput {
+  employeeId: ID!
+  email: ID!
+}
+
+enum HealthcareVertical {
+  physical_therapy
+  renal_care
+  aba_autism_therapy
+}
+
+enum HSSRegion {
+  manhattanWest
+  manhattanEast
+  brooklyn
+  westchester
+  newJersey
+  midtown
+}
+
+""" An Injury is associated with a condition. """
+type Injury {
+  id: ID!
+  area: String!
+}
+
+input InPersonAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  createdAtStart: Date
+  createdAtEnd: Date
+  status: AppointmentStatus
+  confirmationStatus: ConfirmationStatus
+  clinicIds: [ID]
+  employeeIds: [ID]
+  contactIds: [ID]
+  appointmentTypeIds: [ID]
+  isAssigned: Boolean
+  assignedEmployeeIds: [ID]
+  statuses: [AppointmentStatus]
+  confirmationStatuses: [ConfirmationStatus]
+  appointmentStatuses: [NewAppointmentStatus]
+}
+
+type Integration {
+  id: ID!
+  emrName: String!
+  hasSingleSlotAvailabilities: Boolean!
+}
+
+input IntegrationPrecheckInput {
+  alfa: ID!
+  omega: ID!
+}
+
+type IntercomHashOutput {
+  hash: String!
+}
+
+type InternalPatientReview {
+  id: ID!
+  isApproved: Boolean!
+  reviewType: ReviewType!
+  physicalTherapistRating: Int
+  primaryAppointmentRating: Int
+  secondaryAppointmentRating: Int
+  originalComment: String
+  editedComment: String
+  editReason: String
+  clinicId: ID
+  therapistId: ID
+  videoAppointmentId: ID
+  appointmentId: ID
+  clinic: PublicClinic
+  therapist: PublicTherapist
+  videoAppointment: VideoAppointment
+  appointment: Appointment
+}
+
+type InternalPatientReviewsOutput {
+  result: [InternalPatientReview]
+  pager: ListPager
+}
+
+type InternalVideoRoom {
+  id: ID!
+  uid: ID!
+  createdAt: DateTime!
+  clinicId: ID
+  recordingSessionURL: String
+  sessionId: String!
+  startTime: DateTime!
+  timeZone: String!
+  testSessionId: String
+  partnerId: String
+  patientToken: String
+  providerToken: String
+  patientLink: String
+  providerLink: String
+  patientCode: String
+  providerCode: String
+  archiveId: String
+  providerEmail: String
+  videoAppointmentUid: ID
+  recordingStartedAt: DateTime
+  sessionEvents: [SessionEvent]
+  archiveEvents: [ArchiveEvent]
+  patientConnectionMOS: Int
+  providerConnectionMOS: Int
+  patientAudioBitrate: Int
+  providerAudioBitrate: Int
+  patientVideoBitrate: Int
+  providerVideoBitrate: Int
+  isPatientCameraEnabled: Boolean
+  isProviderCameraEnabled: Boolean
+  isPatientAudioEnabled: Boolean
+  isProviderAudioEnabled: Boolean
+  patientBrowser: String
+  providerBrowser: String
+  patientDevice: String
+  providerDevice: String
+  hasUnlimitedSessionLength: Boolean
+  shouldRecordingAutoStart: Boolean
+  isSessionCompleted: Boolean
+}
+
+input InternalVideoRoomQueryInput {
+  id: ID
+  uid: ID
+}
+
+type Invoice {
+  createdAt: DateTime
+  invoiceStartDate: DateTime!
+  invoiceEndDate: DateTime!
+  amountDue: Int!
+  amountPaid: Int
+  dueDate: DateTime
+  hostedInvoiceUrl: String
+  status: String!
+}
+
+input IsEmployeeAllowedToAccessPatientInput {
+  employeeId: ID!
+  patientId: ID!
+}
+
+type IsEmployeeAllowedToAccessPatientOutput {
+  result: Boolean!
+}
+
+scalar JSONObject
+
+input LinkContactToPatientInput {
+  contactId: ID!
+  patientId: ID!
+}
+
+""" Handles pagination """
+type ListPager {
+  limit: Int
+  offset: Int
+  count: Int
+  total: Int
+}
+
+"""Location typically represents the location that a clinic is."""
+type Location {
+  id: ID!
+  address: String
+  address2: String
+  city: String!
+  state: String!
+  zipcode: String
+  country: String
+  formattedAddress: String
+  distance: Float
+  geo: GeoPoint
+
+  """ a service area only requires a city and a state. its not a specific address 
+  """
+  isServiceArea: Boolean
+
+  """ name for the service area """
+  serviceAreaName: String
+}
+
+enum LogLevel {
+  debug
+  info
+  error
+}
+
+input MarkEmployeeAsTherapistInput {
+  employeeId: ID!
+  isTherapist: Boolean!
+}
+
+input MarkNotificationsAsViewedInput {
+  notificationIds: [ID]
+}
+
+type Message {
+  id: ID!
+  conversationId: ID!
+  employeeId: ID
+  text: String!
+  firstViewedAt: DateTime
+  firstViewedByEmployeeId: ID
+  timestamp: DateTime
+}
+
+type Mutation {
+  updateAppointmentConfirmationStatus(input: UpdateAppointmentConfirmationStatusInput): Appointment
+
+  """ Creates an appopintment with a non-integrated Clinic. """
+  createAppointmentWithNonIntegratedClinic(input: CreateAppointmentWithNonIntegratedClinicInput): Appointment
+
+  """
+  [PATIENT]: Creates an appopintment with an integrated Clinic - AKA Integrated Appointment
+  """
+  createAppointmentWithIntegratedClinic(input: CreateAppointmentWithIntegratedClinicInput): Appointment
+
+  """ Cancels an appoointment. """
+  cancelAppointment(id: ID): Appointment
+
+  """ Updates appointment condition """
+  updateAppointment(input: UpdateAppointment): Appointment
+
+  """ [EMPLOYEE(all)]: Marks appointmet as paient has been contacted """
+  markAppointmentAsContacted(id: ID!): Appointment
+
+  """ [EMPLOYEE(all)]: Sends aternative times to patient in the SMS format """
+  sendAlternateTimesSMS(input: SendAlternateTimesSMSInput): Appointment
+
+  """ [EMPLOYEE(all)]: Marks appointment as user has not showed up to appointment 
+  """
+  markAppointmentAsNoShow(id: ID!): Appointment
+  createClinicAppointmentWithTherapistAndPatient(input: CreateClinicAppointmentWithTherapistAndPatientInput!): Appointment!
+  updateAppointmentStartTime(input: UpdateAppointmentStartTimeInput): Appointment
+  createInPersonAppointment(input: CreateInPersonAppointmentInput!): Appointment!
+  createAppointmentRequest(input: AppointmentRequestInput!): Appointment
+  assignAppointmentToEmployee(input: AssignAppointmentToEmployeeInput): Appointment
+  createAppointmentType(input: CreateAppointmentTypeInput!): CompanyAppointmentType!
+  updateAppointmentType(input: UpdateAppointmentTypeInput!): CompanyAppointmentType!
+  setAppointmentTypesForEmployee(input: SetEmployeeAppointmentTypesInput!): SuccessOutput!
+  setEmployeesForAppointmentType(input: SetAppointmentTypeEmployeesInput!): SuccessOutput!
+  removeAppointmentTypeForEmployee(input: RemoveEmployeeAppointmentTypeInput!): SuccessOutput!
+  updateClinicBookingConfig(input: UpdateClinicBookingConfigInput): ClinicBookingConfig
+
+  """ [ADMIN, EMPLOYEE(admin, manager)]: Update clinic hours at clinic"""
+  updateClinicHoursOfOperation(input: UpdateClinicHoursOfOperationInput): ClinicBookingConfig
+  updateCompanyBookingFlow(input: UpdateBookingFlow): BookingFlow
+  updateCompanyTelehealthConfig(input: UpdateCompanyTelehealthConfig!): CompanyTelehealthConfig
+
+  """ Creates a Condition. """
+  createCondition(input: CreateConditionInput): Condition
+
+  """ sends a request to SQS worker for download link to be created """
+  requestCSVDownload(input: RequestCSVInput!): SuccessOutput
+
+  """ [ADMIN, EMPLOYEE(admin, manager)]: Update employee hours at clinic"""
+  updateEmployeeHoursAtClinic(input: UpdateEmployeeHoursAtClinicInput!): EmployeeHourSlotsAtClinic
+
+  """ Creates or updates a prerequest """
+  createOrUpdatePrerequest(input: CreateOrUpdatePrerequestInput): Prerequest
+  createOrUpdateBookingSession(input: CreateOrUpdateBookingSessionInput): BookingSession
+
+  """ updates a video appointment based on appointment ID"""
+  updateVideoAppointment(input: UpdateVideoAppointmentInput): VideoAppointment
+
+  """[PATIENT]: creates a video appointment request that is pending"""
+  requestClinicVideoAppointment(input: RequestClinicVideoAppointmentInput): VideoAppointment
+
+  """[EMPLOYEE]: creates a video appointment that is confirmed"""
+  createClinicVideoAppointment(input: CreateClinicVideoAppointmentInput): VideoAppointment
+  resendVideoAppointmentConfirmation(input: ResendVideoAppointmentConfirmationInput): VideoAppointment
+
+  """[EMPLOYEE, PATIENT]: cancels a video appointment"""
+  cancelVideoAppointment(id: ID!, shouldCancelSeries: Boolean): VideoAppointment
+  updateVideoAppointmentStartTime(input: UpdateVideoAppointmentStartTimeInput): VideoAppointment
+  updateVideoAppointmentRecurringSeries(input: UpdateVideoAppointmentRecurringSeriesInput!): VideoAppointment
+  updateVideoAppointmentDetails(input: UpdateVideoAppointmentDetailsInput!): VideoAppointment
+  requestArchiveEmail(videoAppointmentId: ID): SuccessOutput
+
+  """
+  [PATIENT]: creates a video appointment based on the slot provided by EMR - AKA Integrated Video Appointment
+  """
+  requestVideoAppointmentWithIntegratedClinic(input: RequestVideoAppointmentWithIntegratedClinicInput): VideoAppointment
+  createVideoAppointment(input: CreateVideoAppointmentInput): VideoAppointment
+  recalculateVideoAppointmentDuration(videoAppointmentId: ID!): VideoAppointment
+  updateVideoAppointmentConfirmationStatus(input: UpdateVideoAppointmentConfirmationStatusInput!): VideoAppointment
+  createVideoAppointmentRequest(input: VideoAppointmentRequestInput!): VideoAppointment
+
+  """ [EMPLOYEE(all)]: Marks appointmet as paient has been contacted """
+  markVideoAppointmentAsContacted(id: ID!): VideoAppointment
+  createAvailabilityBlock(input: CreateAvailabilityBlockInput!): SuccessOutput
+
+  """ [ADMIN]: Creates new insurance carrier"""
+  createCarrier(input: CreateCarrierInput): CompanyCarrier
+
+  """
+  [ADMIN]: Updates the Company Carrier, including popularity rank to be displayed on FE carousel
+  """
+  updateCarrier(input: UpdateCarrierInput): CompanyCarrier
+
+  """ [ADMIN]: removes insurance carrier"""
+  removeCarrier(carrierId: ID!): CompanyCarrier
+
+  """ [ADMIN, EMPLOYEE(owner, admin)]: Creates new clinic for company"""
+  createClinic(input: CreateClinicInput): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Updates clinic address"""
+  updateClinicLocation(input: ClinicLocationInput): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin)]: Updates clinic parameters"""
+  updateClinic(input: UpdateClinicInput): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Associates clinic with employees
+  """
+  associateClinicWithEmployees(input: AssociateClinicWithEmployeesInput): Clinic
+
+  """[ADMIN, EMPLOYEE(owner, admin)]: archives a clinic"""
+  archiveClinic(id: ID!): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Associates clinic with insurance plans
+  """
+  addClinicPlans(input: AddClinicPlansInput): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: disassociates clinic with employees
+  """
+  disassociateClinicWithEmployees(input: DisassociateClinicWithEmployeesInput): Clinic
+
+  """ [ADMIN, EMPLOYEE(owner, admin)]: Creates new clinic with a service area for a company
+  """
+  createClinicWithServiceArea(input: CreateClinicWithServiceAreaInput): Clinic
+
+  """ [ADMIN]: Copies insurance plans from one clinic to the clinics that are sent in clinicIds
+  """
+  copyInsuranceFromMainClinicToSelectedClinics(input: CopyInsuranceFromMainClinicToSelectedClinicsInput): SuccessOutput
+  setClinicPlans(input: SetClinicPlansInput): Clinic
+  removeClinicPlans(input: RemoveClinicPlansInput): Clinic
+
+  """ [ADMIN]: unarchive clinic in Badger """
+  unArchiveClinic(clinicId: ID): Clinic
+
+  """ [ADMIN]: deletes an archived clinic in Badger so it is unsearchable and details are not viewable 
+  """
+  deleteArchivedClinic(clinicId: ID): Clinic
+
+  """ [ADMIN]: deletes archived clinics in Badger so it is unsearchable and details are not viewable 
+  """
+  deleteBatchOfArchivedClinics(input: DeleteClinicsInput): [Clinic]
+  updateCompany(input: UpdateCompanyInput): Company
+  updateCompanyLocation(input: CompanyLocationInput): Company
+  archiveCompany(companyId: ID): Company
+  unArchiveCompany(companyId: ID): Company
+  archiveAllClinicsAtCompany(companyId: ID): Company
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Associates employee with clinic
+  """
+  associateEmployeeWithClinics(input: AssociateEmployeeWithClinicsInput): Employee
+
+  """ [ADMIN]: Create employees from CSV"""
+  createEmployeesFromCSV(input: CreateEmployeesFromCSVInput): SuccessOutput
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Updates employee role to be one of possible value
+  """
+  updateEmployeeRole(input: UpdateEmployeeRoleInput): Employee
+
+  """ [ADMIN]: Updates employee e-mail in Cognito"""
+  updateEmployeeEmail(input: UpdateEmployeeEmailInput): Employee
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Updates employee therapis status
+  """
+  markEmployeeAsTherapist(input: MarkEmployeeAsTherapistInput): Employee
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager, self)]: Updates employee information via Profile Form
+  """
+  updateEmployee(input: UpdateEmployeeInput): Employee
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: archives targert employee"""
+  archiveEmployee(id: ID!): Employee
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: resends an invitation to an invited employee
+  """
+  resetEmployeeInvite(id: ID!): Employee
+
+  """ [EMPLOYEE]: Creates new plain employee, user, and company"""
+  createEmployeeAndCompany: Employee
+
+  """ [EMPLOYEE(owner, admin, manager)]: Creates new plain employee in DB and cognito
+  """
+  createCompanyEmployee(input: CreateCompanyEmployeeInput): EmployeeOutput
+
+  """ [EMPLOYEE]: Updates Employee Terms of Service and Privacy Policy"""
+  updateEmployeeAgreement(input: UpdateEmployeeAgreementInput): Employee
+
+  """ [ADMIN, EMPLOYEE(owner, admin, manager)]: Disassociates employee with clinics they are currently associated with
+  """
+  disassociateEmployeeWithClinics(input: DisassociateEmployeeWithClinicsInput): Employee
+  unArchiveEmployee(employeeId: ID!): Employee
+  disableEmployeeMFA(id: ID!): Employee
+  resyncEmployee(id: ID!): Employee
+  recreateCognitoAccount(id: ID!): Employee
+
+  """
+  [ADMIN, EMPLOYEE(owner, admin, manager)]: Provides user access to Tableau
+  """
+  activateTableauForEmployee(input: ActivateTableauForEmployeeInput): Employee
+
+  """
+  [ADMIN]: Create a new company admin and send an email with a temporary password 
+  """
+  createCompanyAdminUser(email: String!): String
+  company_empty: String
+  createNetwork(input: CreateNetworkInput!): Network!
+  updateNetwork(input: UpdateNetworkInput!): Network!
+  addClinicToNetwork(input: AddClinicToNetworkInput!): Network!
+  addNetworksToClinic(input: AddNetworksToClinicInput!): [Network]
+  removeClinicFromNetwork(input: RemoveClinicFromNetworkInput!): Network!
+  removeNetworksFromClinic(input: RemoveNetworksFromClinicInput!): Network!
+  archiveNetwork(networkId: ID!): Network!
+
+  """ [ADMIN]: Creates new insurance plan for insurance carrier"""
+  createPlan(input: CreatePlanInput): CompanyPlan
+
+  """ [ADMIN]: Removes insurance plan for insurance carrier"""
+  removePlan(planId: ID!): CompanyPlan
+
+  """ [ADMIN]: Updates insurance plan name for insurance carrier"""
+  updatePlan(input: UpdatePlanInput): CompanyPlan
+  createConsentFormUploadUrl(input: ConsentFormUploadInput!): UploadedFileResponse!
+  createUploadCsvUrl(input: UploadCsvInput!): UploadCsvResponse!
+  triggerUploadCsv(input: TriggerUploadCsvInput!): TriggerUploadCsvResponse!
+  updateClinicSMSConfig(input: UpdateClinicSMSConfigInput!): ClinicSMSConfig
+  createConversation(input: CreateConversationInput!): Conversation
+  updateConversation(input: UpdateConversationInput!): Conversation
+  archiveConversation(id: ID!): Conversation
+  addMessageToConversation(input: AddMessageToConversationInput): Message
+  markMessagesAsRead(conversationId: ID!): Conversation
+  createFlog(input: CreateFlogInput): Flog
+  updateAppointmentTypeEMRId(input: UpdateAppointmentTypeEMRId!): CompanyAppointmentType!
+  updateClinicIntegrationDetails(input: UpdateClinicIntegrationDetailsInput!): ClinicIntegrationDetails!
+  updateClinicWebPTSchedulingLink(input: UpdateClinicWebPTSchedulingLinkInput!): ClinicIntegrationDetails!
+  updateClinicIntegrationConfiguration(input: UpdateClinicIntegrationConfigurationInput): ClinicIntegrationDetails!
+  updateCompanyWebPTReachConfig(input: UpdateCompanyWebPTReachConfigInput!): CompanyIntegrationDetails!
+  updateCompanyDialogHealthConfig(input: UpdateCompanyDialogHealthConfigInput!): CompanyIntegrationDetails!
+  activateCompanyIntegration(input: ActivateCompanyIntegrationInput!): CompanyIntegrationDetails!
+  updateCompanyIntegrationConfiguration(input: UpdateCompanyIntegrationConfigurationInput): CompanyIntegrationDetails!
+  updateEmployeeIntegrationDetails(input: UpdateEmployeeIntegrationDetailsInput!): EmployeeIntegrationDetails!
+  updateCompanyRaintreeCredentials(input: UpdateCompanyRaintreeCredentialsInput!): CompanyIntegrationDetails
+  integration_empty: String
+
+  """ [EMPLOYEE, PATIENT]: Creates a patient's or employee's device information
+  """
+  createOrUpdateDeviceInformation(input: CreateDeviceInformationInput): DeviceInformation
+
+  """ [EMPLOYEE, PATIENT]: Update patient's or employee's notification preferences
+  """
+  updateNotificationPreferences(input: NotificationPreferencesInput): User
+  markNotificationsAsViewed(input: MarkNotificationsAsViewedInput): [Notification]
+
+  """ [ADMIN]: Update notification email for clinics that prefer to have all notifications sent to one email
+  """
+  updateNotificationEmail(input: UpdateNotificationEmailInput): ClinicNotificationSettings
+  updateClinicNotificationSettings(input: UpdateClinicNotificationSettingsInput): ClinicNotificationSettings
+
+  """[TELEHEALTH] Creates a `PartnerVideoRoom`"""
+  createPartnerVideoRoom(input: CreatePartnerVideoRoomInput): PartnerVideoRoom
+  cancelPartnerVideoRoom(uid: ID): PartnerVideoRoom
+  reschedulePartnerVideoRoom(input: ReschedulePartnerVideoRoomInput!): PartnerVideoRoom!
+  createContact(input: CreateContactInput!): Contact!
+  updateContact(input: UpdateContactInput!): Contact!
+  createContactsFromCSV(input: CreateContactsFromCSVInput!): SuccessOutput!
+  toggleContactArchiveStatus(input: ToggleContactArchiveStatusInput!): Contact!
+  linkContactToPatient(input: LinkContactToPatientInput!): Contact!
+
+  """ [EMPLOYEE(all)]: Sends scheduling URL to contact in the SMS format """
+  sendSchedulingUrlSMS(input: SendSchedulingUrlSMSInput!): SuccessOutput!
+  createPatient(input: PatientCreateInput): Patient
+  updatePatient(input: PatientUpdateInput): Patient
+  updatePatientEmail(input: PatientEmailUpdateInput): Patient
+  createRxSparkPatient(email: String!): RxSparkOutput
+  archivePatient(patientId: ID): Patient
+  unArchivePatient(patientId: ID): Patient
+  addClinicToTraditionalSubscription(clinicId: ID!): ClinicSubscriptionDetail!
+  removeClinicFromTraditionalSubscription(clinicId: ID!): ClinicSubscriptionDetail!
+  updateClinicSpecialBillingStatus(input: UpdateClinicSpecialBillingStatusInput!): ClinicSubscriptionDetail!
+  updateClinicTelehealthOption(input: UpdateClinicTelehealthOptionInput!): ClinicSubscriptionDetail!
+  refundCompanyCharge(input: RefundCompanyChargeInput): CompanyCharge
+  updateCompanyBillingContactWithOverview(input: UpdateCompanyBillingContactInput): CompanyBillingOverview!
+  updateCompanyCreditCardWithOverview(input: UpdateCompanyCreditCardInput): CompanyBillingOverview!
+  updateCompanyBillingDetailsForAdmin(input: UpdateCompanyBillingDetailsForAdminInput): CompanyBillingOverview!
+  addPrepaidSchedulingPlanForEmployee(input: AddPrepaidSchdulingPlanInput): CompanyBillingOverview!
+  addOrUpdatePrepaidSchedulingPlanForAdmin(input: AddOrUpdatePrepaidSchedulingPlanInput): CompanyBillingOverview!
+  addTransactionalTelehealthPlan(input: AddTransactionalTelehealthPlanInput): CompanyBillingOverview!
+  updateCompanyTelehealthPlan(input: UpdateCompanyTelehealthPlanInput): CompanyBillingOverview!
+  addArchivePlanToTransactionalSubscription(input: AddArchivePlanToTransactionalSubscriptionInput): CompanyBillingOverview!
+  updateArchivePlanForTransactionalSubscription(input: UpdateArchivePlanForTransactionalSubscriptionInput): CompanyBillingOverview!
+  updateCompanyArchiveOptionOnTransactionalSub(input: UpdateCompanyArchiveOptionInput): CompanyBillingOverview!
+  reconcileManualSubscriptionToAnnualPlan(input: ReconcileManualSubscriptionToAnnualPlanInput): CompanyBillingOverview!
+  createNewProductPricingPlan(input: CreateNewProductPricingPlanInput): SubscriptionPlan
+  createPlatformEndpoint(input: CreatePlatformEndpointInput): SuccessfulResponse
+  updateCompanyReviewConfig(input: UpdateCompanyReviewConfigInput!): ReviewConfig!
+
+  """ Creates a new review from an appointmentUid """
+  createPatientReview(input: CreatePatientReviewInput!): SuccessOutput!
+
+  """ Allows admin to review, edit, and approve a review """
+  updatePatientReview(input: UpdatePatientReviewInput!): InternalPatientReview!
+  createBetterPTVideoRoom(input: CreateBetterPTVideoRoomInput!): InternalVideoRoom
+  startRecording(uid: ID!, code: String!): VideoRoom
+  addUserEventToVideoRoom(input: AddUserEventToVideoRoomInput!): VideoRoom
+  refreshVideoRoomToken(input: RefreshVideoRoomTokenInput!): VideoRoom
+}
+
+type Network {
+  id: ID!
+  displayName: String!
+  category: NetworkCategoriesEnum!
+  about: String
+  companyId: ID
+  archivedAt: DateTime
+  clinics: [Clinic]
+}
+
+enum NetworkCategoriesEnum {
+  brand
+  facilityGroup
+}
+
+type NetworksOutput {
+  result: [Network]
+  pager: ListPager
+}
+
+""" The Appoinment status of the appointment. """
+enum NewAppointmentStatus {
+  Cancelled
+  Completed
+  Declined
+  Expired
+  NoShow
+  PendingTextConfirmation
+  Requested
+  Upcoming
+}
+
+type Notification {
+  uid: String!
+  message: String!
+  viewed: Boolean!
+  type: NotificationType
+  createdAt: DateTime!
+}
+
+type NotificationPreferences {
+  allowSMS: Boolean!
+  allowEmail: Boolean!
+  allowPush: Boolean!
+}
+
+input NotificationPreferencesInput {
+  allowSMS: Boolean
+  allowEmail: Boolean
+  allowPush: Boolean
+}
+
+input NotificationsInput {
+  type: NotificationType
+  viewed: Boolean
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+type NotificationsOutput {
+  result: [Notification]
+  pager: ListPager
+}
+
+enum NotificationType {
+  pending
+  cancelled
+  confirmed
+  reminder
+  denied
+}
+
+""" This is enum to specify sequelize order for queries  """
+enum Order {
+  """ Ascending """
+  ASC
+
+  """ Descending """
+  DESC
+}
+
+input PartnerClinicInput {
+  partnerId: String!
+  zipcode: String
+}
+
+"""
+[TELEHEALTH] A PartnerVideoRoom contains all necessary data for a telehealth session.
+"""
+type PartnerVideoRoom {
+  uid: ID!
+  startTime: DateTime!
+  timeZone: String!
+  patientLink: String!
+  providerLink: String!
+  displayName: String
+  partnerCustomerId: String
+  patientDuration: Int
+  providerDuration: Int
+  didPatientAttend: Boolean
+  didProviderAttend: Boolean
+  status: PartnerVideoRoomStatusEnum
+  partnerPatientPhone: String
+  partnerPatientEmail: String
+  partnerClinicName: String
+  videoRoomTermsAndConditionsURL: String
+}
+
+enum PartnerVideoRoomStatusEnum {
+  scheduled
+  started
+  completed
+  cancelled
+}
+
+enum PartnerVideoRoomTimeZonesEnum {
+  Eastern_Time
+  Central_Time
+  Mountain_Time
+  Pacific_Time
+  Alaska_Time
+  Mountain_Standard_Time
+  Hawaii_Standard_Time
+}
+
+type Patient {
+  id: ID!
+  appointments(input: PatientAppointmentsInput): AppointmentsOutput
+  videoAppointments(input: PatientVideoAppointmentsInput): VideoAppointmentsOutput
+  notificationPreferences: NotificationPreferences
+  notifications(input: NotificationsInput): NotificationsOutput
+  uid: String!
+  email: String
+  acceptPatientTOS: Boolean!
+  acceptPatientPrivacy: Boolean!
+  acceptHIPAA: Boolean!
+  acceptPatientTOSDate: DateTime
+  acceptPatientPrivacyDate: DateTime
+  acceptHIPAADate: DateTime
+  insuranceCardFrontUrl: String
+  insuranceCardBackUrl: String
+  insuranceCarrier: String
+  insurancePlan: String
+  insuranceMemberId: String
+  birthday: Date
+  firstName: String
+  lastName: String
+  phone: String
+  gender: Gender
+  profileImgUrl: String
+  smallProfileImgUrl: String
+  isTestPatient: Boolean
+  secondaryInsuranceCarrier: String
+  secondaryInsurancePlan: String
+  secondaryInsuranceMemberId: String
+  primaryAddress: PrimaryAddress
+  preferredContactMethod: PreferredContactMethod
+  archivedAt: Date
+  hasValidatedInsurance: Boolean
+  officialPlanDescription: String
+  planStartDate: Date
+  contact(input: PatientContactInput!): Contact
+}
+
+input PatientAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  confirmationStatus: ConfirmationStatus
+}
+
+input PatientContactInput {
+  clinicId: ID!
+}
+
+input PatientCreateInput {
+  firstName: String!
+  lastName: String!
+  phone: String!
+  gender: Gender!
+  email: String!
+  birthday: Date!
+}
+
+input PatientEmailUpdateInput {
+  email: String!
+  patientId: ID!
+}
+
+input PatientsInput {
+  limit: Int! = 20
+  offset: Int! = 0
+  test: Boolean
+  query: String
+  isArchived: Boolean
+}
+
+type PatientsOutput {
+  result: [Patient]
+  pager: ListPager
+}
+
+input PatientUpdateInput {
+  patientId: ID!
+  firstName: String
+  lastName: String
+  phone: String
+  gender: Gender
+  birthday: Date
+  insuranceCarrier: String
+  insurancePlan: String
+  insuranceMemberId: String
+  acceptPatientTOS: Boolean
+  acceptPatientPrivacy: Boolean
+  acceptHIPAA: Boolean
+  isTestPatient: Boolean
+  secondaryInsuranceCarrier: String
+  secondaryInsurancePlan: String
+  secondaryInsuranceMemberId: String
+  address: String
+  address2: String
+  city: String
+  state: String
+  zipcode: String
+  preferredContactMethod: PreferredContactMethod
+}
+
+input PatientVideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  order: Order! = DESC
+  start: Date
+  end: Date
+  confirmationStatus: VideoConfirmationStatus
+}
+
+input PendingAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+input PendingVideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+enum performedByEmployeeRole {
+  owner
+  admin
+  manager
+  scheduler
+  self
+}
+
+"""
+A Plan is the the specific plan an insurance carrier has and that a clinic accepts
+"""
+type Plan {
+  id: ID!
+  planName: String!
+  carrierId: ID!
+  carrier: Carrier!
+  clinics(limit: Int! = 10, offset: Int! = 0, companyId: ID, name: String, rehabOnly: Boolean): PublicClinicsOutput
+}
+
+enum Platform {
+  patientIOS
+  patientWeb
+  clinicWeb
+}
+
+enum PreferredContactMethod {
+  phone
+  email
+}
+
+""" A booking that has not yet been finalized """
+type Prerequest {
+  uid: ID
+  clinicId: ID
+  companyId: ID
+  companyName: String
+  startTime: DateTime
+  therapistId: ID
+  source: String
+  isBrandedBooking: Boolean
+  clinicName: String
+  bookingType: String
+  conditionId: ID
+  isDirectAccess: Boolean
+  isInitialEval: Boolean
+  referredBy: String
+  isMedicare: Boolean
+  isPostOp: Boolean
+  medicalProcedureDate: Date
+  isFirstTimeAtClinic: Boolean
+
+  """ Question asked by the platform at booking request """
+  marketingQuestionResponse: String
+  expiresAt: DateTime
+  isForWorkersCompOrMVA: Boolean
+  hssRegion: HSSRegion
+  physicalTherapySpecialty: String
+  therapyType: String
+  otherExplanation: String
+  customFormResponse: JSONObject
+}
+
+type PrimaryAddress {
+  address: String
+  address2: String
+  city: String
+  state: String
+  zipcode: String
+}
+
+type Product {
+  id: ID
+  displayName: String
+  stripeProductId: String
+  billingUnit: ProductBillingUnit
+  subscriptionCategory: SubscriptionCategory
+  plans: [SubscriptionPlan]
+  type: ProductType
+}
+
+enum ProductBillingUnit {
+  provider
+  location
+  minute
+  call
+}
+
+enum ProductType {
+  scheduling
+  telehealth
+  recording
+}
+
+"""
+The PublicClinic hold all details about a clinic that are relevant to patients on the BetterPT.com
+"""
+type PublicClinic {
+  id: ID!
+  bookingConfig: ClinicBookingConfig
+  appointmentTypes: [CompanyAppointmentType]
+
+  """ Prefer using the 'input' argument. Other arguments will be deprecated. 
+  """
+  availableSlots(input: PublicClinicAvailableSlotsInput!): [AvailableSlot]
+  nextAvailableDate(input: PublicClinicNextAvailableDateInput!): AvailableDate
+  appointmentTimeSlots(input: PublicClinicAvailableTimesInput!): [AvailableSlot]
+  nextAvailableDates(input: PublicClinicNextAvailableDatesInput!): [AvailableDate]
+  clinicName: String
+  location: PublicLocation
+  therapists: [PublicTherapist]!
+  companyId: ID
+  company: PublicCompany
+  matchingPlan: Plan
+  plans: [Plan]
+  phone: String
+  email: String
+  about: String
+  timeZone: String
+  cancellationPolicy: String
+  isHSSAffiliate: Boolean
+  avatarUrl: String
+  smallAvatarUrl: String
+  logoUrl: String
+  smallLogoUrl: String
+  betterPTSubscriptionActive: Boolean
+  useClinicName: Boolean
+  internalDisplayName: String
+  isIntegrated: Boolean
+  hours: PublicClinicHours @deprecated(reason: "Prefer 'PublicClinic.bookingConfig.hours'")
+  instagramUrl: String
+  facebookUrl: String
+  twitterUrl: String
+  hasAlternateTimeUI: Boolean
+  partnerBookingURL(partnerId: ID!): String
+  partnerTelehealthBookingURL(partnerId: ID!): String
+  isInsuranceBetaParticipant: Boolean
+  isTelehealthActive: Boolean
+  patientConsentFormUrl: String
+  isTemporarilyClosed: Boolean
+  partnerId: String
+  physicalTherapySpecialtyOptions: [PublicClinicTherapySpecialtyOption]
+  therapyTypeOptions: [PublicClinicTherapyTypeOption]
+  isBetterAccessOnly: Boolean
+  shouldUseBABookingFlow: Boolean
+  hoursOfOperationNotes: String
+  isAppointmentCancellationAllowed: Boolean
+  shouldUseProviderSchedule: Boolean
+  shouldUseAutoconfirmedAppointments: Boolean
+}
+
+input PublicClinicAvailableSlotsInput {
+  start: Date!
+  end: Date!
+  appointmentType: AppointmentType!
+}
+
+input PublicClinicAvailableTimesInput {
+  start: Date!
+  end: Date!
+  appointmentTypeId: ID!
+  therapistId: ID
+}
+
+"""
+PublicClinicHours contain the open and close times for a clinic. Used to generate availablites for non-integrated clinics
+"""
+type PublicClinicHours {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+input PublicClinicMatchInput {
+  name: String
+  address: String
+  city: String
+  state: String
+  zipcode: String
+}
+
+type PublicClinicMatchResult {
+  clinics: [PublicClinic]
+  potentialMatchCount: Int
+}
+
+input PublicClinicNextAvailableDateInput {
+  start: Date!
+  appointmentType: AppointmentType!
+}
+
+input PublicClinicNextAvailableDatesInput {
+  start: Date!
+  appointmentTypeId: ID!
+  therapistId: ID
+}
+
+input PublicClinicsByDistanceInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  companyId: ID
+  planId: ID
+  networkId: ID
+  name: String
+  rehabOnly: Boolean
+  telehealthOnly: Boolean
+  lat: Float!
+  lng: Float!
+  radius: Int
+}
+
+input PublicClinicsByLetterInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  letter: String!
+}
+
+input PublicClinicsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  companyId: ID
+  planId: ID
+  networkId: ID
+  name: String
+  rehabOnly: Boolean
+  premiumOnly: Boolean
+}
+
+"""
+PublicClinicsOutput is a paginated list that contains clinics and pager.
+"""
+type PublicClinicsOutput {
+  result: [PublicClinic]
+  pager: ListPager
+}
+
+enum PublicClinicTherapySpecialtyOption {
+  hand_or_upper_extremity
+  pediatrics
+  pelvic_floor
+  vestibular
+  lymphedema
+  neuro
+  lsvt_loud
+  concussion
+  wheelchair
+  lsvt_big
+}
+
+enum PublicClinicTherapyTypeOption {
+  physical_therapy
+  occupational_therapy
+  speech
+}
+
+"""A company is the organization that hires PTs and operates clinics"""
+type PublicCompany {
+  id: ID!
+  bookingFlow: BookingFlow
+  telehealthConfig: CompanyTelehealthConfig
+  location: PublicLocation
+  companyName: String
+  website: String
+  avatarUrl: String
+  smallAvatarUrl: String
+  bookingFlowRedirectURL: String
+  bookingFlowHex: String
+  isBookingFlowButtonBlack: Boolean
+  telehealthPolicyText: String
+  providerAppId: String
+  isMobileRehab: Boolean
+  isRecordingOptionAvailable: Boolean
+  videoHours: PublicCompanyVideoHours
+  shouldUseRecordingCopyForConsent: Boolean
+  shouldAutoStartRecording: Boolean
+  shouldRemoveCallLengthLimit: Boolean
+  clinics(limit: Int! = 10, offset: Int! = 0, planId: ID, name: String, rehabOnly: Boolean): PublicClinicsOutput
+  useClinicNameForMetadata: Boolean
+  healthcareVertical: HealthcareVertical
+}
+
+"""
+PublicCompanyVideoHours contain the open and close times for a video appointments at a company.
+"""
+type PublicCompanyVideoHours {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+"""PublicLocation typically represents the location that a clinic is."""
+type PublicLocation {
+  id: ID!
+  address: String
+  address2: String
+  city: String!
+  state: String!
+  zipcode: String
+  country: String
+  formattedAddress: String
+  distance: Float
+  geo: GeoPoint
+  isServiceArea: Boolean
+}
+
+type PublicNetwork {
+  id: ID!
+  displayName: String!
+  category: PublicNetworkCategoriesEnum!
+  companyId: ID
+  about: String
+}
+
+enum PublicNetworkCategoriesEnum {
+  brand
+  facilityGroup
+}
+
+"""
+PublicTherapist is a company employee that works at a clinic and can treat patients
+"""
+type PublicTherapist {
+  id: ID!
+  appointmentTypes: [CompanyAppointmentType]
+
+  """ Prefer using the 'input' argument """
+  availableSlots(input: PublicTherapistAvailableSlotsInput!): [AvailableSlot]
+  nextAvailableDate(input: PublicTherapistNextAvailableDateInput!): AvailableDate
+  appointmentTimeSlots(input: PublicTherapistAvailableTimesInput!): [AvailableSlot]
+  nextAvailableDates(input: PublicTherapistNextAvailableDatesInput!): [AvailableDate]
+  clinics: [PublicClinic]!
+  companyId: ID!
+  company: PublicCompany!
+  isTherapist: Boolean!
+  degreeOrCertification: String
+  yearsExperience: String
+  bio: String
+  firstName: String
+  lastName: String
+  gender: String
+  profileImgUrl: String
+  smallProfileImgUrl: String
+}
+
+input PublicTherapistAvailableSlotsInput {
+  start: Date!
+  end: Date!
+  appointmentType: AppointmentType!
+  clinicId: ID
+}
+
+input PublicTherapistAvailableTimesInput {
+  start: Date!
+  end: Date!
+  appointmentTypeId: ID!
+  clinicId: ID
+}
+
+input PublicTherapistNextAvailableDateInput {
+  start: Date!
+  appointmentType: AppointmentType!
+  clinicId: ID
+}
+
+input PublicTherapistNextAvailableDatesInput {
+  start: Date!
+  appointmentTypeId: ID!
+  clinicId: ID
+}
+
+type Query {
+  inPersonAppointmentActivityLogs(input: AppointmentActivityLogsInput!): [ActivityLog]!
+  videoAppointmentActivityLogs(input: VideoAppointmentActivityLogsInput!): [ActivityLog]!
+
+  """ Queries all. """
+  appointments: [Appointment]
+
+  """ Queries an Appointment by id. """
+  appointment(id: ID): Appointment
+
+  """ [EMPLOYEE(all)]: Queries appointmetns that have been booked and not denied or approved 
+  """
+  pendingAppointments(input: PendingAppointmentsInput): AppointmentsOutput
+
+  """ [ADMIN]: Queries all. """
+  adminAppointments(input: AdminAppointmentsInput): AppointmentsOutput
+  analyticsAppointments(input: AnalyticsAppointmentInput): [AnalyticsAppointment]
+  inPersonAppointments(input: InPersonAppointmentsInput!): AppointmentsOutput
+  appointmentType(id: ID!): CompanyAppointmentType!
+
+  """ Queries all. """
+  conditions: [Condition]
+
+  """ Queries a Condition by id. """
+  condition(id: ID): Condition
+
+  """ [PUBLIC]: Query employee hours at clinic"""
+  employeeHoursAtClinic(input: EmployeeHoursAtClinicInput): EmployeeHourSlotsAtClinic
+  injuries: [Injury]!
+
+  """ Queries an Prerequest by uid. """
+  prerequest(uid: ID): Prerequest
+  bookingSession(uid: ID): BookingSession
+
+  """ [ADMIN, EMPLOYEE]: Queries all video appointments for admin and associated clinic video appointments for employees. 
+  """
+  videoAppointments(input: VideoAppointmentsInput): VideoAppointmentsOutput
+
+  """ Queries a single VideoAppointment by id. """
+  videoAppointment(id: ID): VideoAppointment
+
+  """ Queries all pending VideoAppointments which an employee is associated with. 
+  """
+  pendingVideoAppointments(input: PendingVideoAppointmentsInput): VideoAppointmentsOutput
+
+  """ Queries all clinic video appointments to get a list of unique provider emails 
+  """
+  videoAppointmentProviderEmails(clinicId: ID): VideoAppointmentProviderEmailOutput
+  _dummy: String
+  clinic(id: ID!): Clinic
+  clinicAdminEmails(id: ID!): ClinicAdminEmalsOutput
+  clinics(input: ClinicsInput!): ClinicsQueryOutput
+  companies(input: CompaniesInput): CompaniesOutput
+  company(id: ID): Company
+
+  """ [EMPLOYEE(all)]: Get employee own data"""
+  me: Employee
+
+  """ [ADMIN, EMPLOYEE(all)]: Updates employee therapis status"""
+  employee(id: ID!): Employee
+
+  """[ADMIN]: for BPT admin to query employee by archived status and email"""
+  employees(input: QueryEmployeesInput): EmployeesOutput
+
+  """
+  [ADMIN, EMPLOYEE(owner, admin, manager)]: Generates a Tableau token for a user
+  """
+  getTableauTokenForEmployee(input: GetTableauTokenForEmployeeInput): String
+  company_empty: String
+  companyListItems(input: CompanyListItemInput!): [CompanyListItem]
+  companyListOptions(input: CompanyListOptionInput!): [CompanyListOption]
+  networks(input: QueryNetworksInput!): NetworksOutput!
+  network(networkId: ID!): Network!
+  conversation(id: ID!): Conversation
+  conversations(clinicId: ID!): [Conversation]
+  myUnreadConversations: [Conversation]
+  activityLogItems: [ActivityLogItem]
+  integrationCompanies(integrationId: ID!): [EmrCompany]
+  integrationFacilities(betterPTCompanyId: ID!): [EmrFacility]
+  integrationProviders(betterPTCompanyId: ID!): [EmrProvider]
+  integrationPrecheck(input: IntegrationPrecheckInput): SuccessOutput
+  webPTFacilities(betterPTCompanyId: ID!): [EmrFacility]
+  integrationAppointmentTypes(betterPTCompanyId: ID!): [EmrAppointmentType]
+  integration_empty: String
+  integrations: [Integration]
+
+  """ [EMPLOYEE, PATIENT]: Generates to intercom hash for security purposes 
+  """
+  intercomHash: IntercomHashOutput!
+
+  """
+  View details for a `PartnerVideoRoom`. Duration and attendance will be updated 2 hours after startTime.
+  """
+  partnerVideoRoom(uid: ID!): PartnerVideoRoom!
+  contact(id: ID!): Contact!
+  contacts(input: ContactsInput!): ContactsOutput!
+
+  """ Access: Admin """
+  isEmployeeAllowedToAccessPatient(input: IsEmployeeAllowedToAccessPatientInput!): IsEmployeeAllowedToAccessPatientOutput
+  mep: Patient
+
+  """ Access: Employee, Admin """
+  patient(id: ID!): Patient
+
+  """ Access: Admin """
+  patients(input: PatientsInput): PatientsOutput
+  products: [Product]
+  product(id: ID): Product
+  traditionalSubscriptionPlans: [TraditionalSubscriptionPlan]
+  telehealthSubscriptionPlans: [TelehealthSubscriptionPlan]
+  archiveSubscriptionPlans: [ArchiveSubscriptionPlan]
+
+  """ Extracted from Appointment - relevant details to patient review. """
+  reviewForm(uid: ID!): ReviewForm!
+
+  """For badger. View all reviews on BetterPT"""
+  reviews(input: ReviewsInput!): InternalPatientReviewsOutput!
+
+  """ For badger, view individual review """
+  review(reviewId: ID!): InternalPatientReview!
+  carriers: [Carrier]
+  carrier(id: ID!): Carrier
+  publicClinic(id: ID!): PublicClinic
+  partnerClinic(input: PartnerClinicInput!): PublicClinic
+  publicClinics(input: PublicClinicsInput): PublicClinicsOutput
+  publicClinicsByLetter(input: PublicClinicsByLetterInput): PublicClinicsOutput
+  publicClinicsSortedByDistance(input: PublicClinicsByDistanceInput): PublicClinicsOutput
+  publicClinicMatch(input: PublicClinicMatchInput): PublicClinicMatchResult
+  publicCompany(id: ID!): PublicCompany
+  citiesByStateCode(code: String): [StateLocation]
+  publicNetwork(id: ID!): PublicNetwork
+  plan(id: ID!): Plan
+  publicTherapist(id: ID!): PublicTherapist
+  videoRoom(uid: ID!, code: String): VideoRoom
+  videoRoomTestToken(input: TestTokenQueryInput!): TestTokenOutput!
+  internalVideoRoom(input: InternalVideoRoomQueryInput!): InternalVideoRoom
+}
+
+input QueryEmployeesInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  query: String
+  isArchived: Boolean
+  companyId: ID
+  role: Role
+  clinicIds: [ID]
+}
+
+input QueryNetworksInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  companyId: ID
+  category: NetworkCategoriesEnum
+}
+
+input ReconcileManualSubscriptionToAnnualPlanInput {
+  companyId: ID!
+  annualPlanId: ID!
+  planAnchorDate: DateTime!
+  isInvoiceBillingActiveForPrepaidSub: Boolean!
+  invoiceBillingDaysToPay: Int
+}
+
+type RecurringSeries {
+  id: ID!
+  recurringFrequency: FrequencyOptions!
+  recurringInterval: Int!
+  endDate: Date!
+  shouldSkipWeekends: Boolean!
+  isActive: Boolean!
+}
+
+input RefreshVideoRoomTokenInput {
+  code: String!
+  uid: ID!
+}
+
+input RefundCompanyChargeInput {
+  companyId: ID!
+  chargeId: String!
+}
+
+input RemoveClinicFromNetworkInput {
+  networkId: ID!
+  clinicIds: [ID!]!
+}
+
+input RemoveClinicPlansInput {
+  clinicId: ID!
+  planIds: [ID!]
+}
+
+input RemoveEmployeeAppointmentTypeInput {
+  employeeId: ID!
+  appointmentTypeId: ID!
+}
+
+input RemoveNetworksFromClinicInput {
+  clinicId: ID!
+  networkIds: [ID!]!
+}
+
+""" The input needed for patient to request a video appointment  """
+input RequestClinicVideoAppointmentInput {
+  clinicId: ID!
+  startTime: DateTime!
+  isInitialEval: Boolean
+  referredBy: String
+  isDirectAccess: Boolean
+  conditionId: ID
+}
+
+input RequestCSVInput {
+  start: Date!
+  end: Date!
+  type: DownloadType!
+  clinicIds: [ID]
+}
+
+""" The input necessary to create an Appointment with an integrated Clinic. 
+"""
+input RequestVideoAppointmentWithIntegratedClinicInput {
+  clinicId: ID!
+  startTime: DateTime!
+  therapistId: ID!
+  source: String!
+  isInitialEval: Boolean
+  referredBy: String
+  conditionId: ID
+  isDirectAccess: Boolean!
+}
+
+"""[TELEHEALTH] The input type for the `createPartnerVideoRoom` mutation."""
+input ReschedulePartnerVideoRoomInput {
+  """Please see the `DateTime` type to see the exact format"""
+  uid: ID!
+  startTime: DateTime!
+}
+
+input ResendVideoAppointmentConfirmationInput {
+  videoAppointmentId: ID!
+  resendForPatient: Boolean
+  resendForEmployee: Boolean
+}
+
+type ReviewConfig {
+  id: ID!
+  isTelehealthReviewCollectionActive: Boolean!
+  isInFacilityReviewCollectionActive: Boolean!
+}
+
+type ReviewForm {
+  uid: ID!
+  hasBeenCompleted: Boolean!
+  reviewType: ReviewType
+  clinicId: ID
+  therapistId: ID
+  startTime: DateTime
+  timeZone: String
+  clinic: PublicClinic
+  therapist: PublicTherapist
+}
+
+input ReviewsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+enum ReviewType {
+  clinic
+  telehealth
+}
+
+enum Role {
+  owner
+  admin
+  manager
+  scheduler
+  self
+}
+
+type RxSparkOutput {
+  status: String
+}
+
+input SendAlternateTimesSMSInput {
+  appointmentId: ID!
+  alternateTime1: DateTime!
+  alternateTime2: DateTime!
+  alternateTimeExpirationHours: Int
+}
+
+input SendSchedulingUrlSMSInput {
+  contactId: ID!
+  clinicId: ID
+  therapistEmployeeId: ID
+}
+
+type SessionEvent {
+  id: ID!
+  eventType: SessionEventType!
+  eventTime: DateTime!
+  sessionId: String!
+  videoUserType: VideoUserType!
+  reason: String
+  rawData: JSONObject
+}
+
+enum SessionEventType {
+  streamCreated
+  streamDestroyed
+  connectionCreated
+  connectionDestroyed
+}
+
+input SetAppointmentTypeEmployeesInput {
+  appointmentTypeId: ID!
+  employeeIds: [ID]!
+}
+
+input SetClinicPlansInput {
+  clinicId: ID!
+  planIds: [ID]!
+}
+
+input SetEmployeeAppointmentTypesInput {
+  employeeId: ID!
+  appointmentTypeIds: [ID]!
+}
+
+type StateLocation {
+  city: String!
+}
+
+type StripeBillingProfile {
+  id: ID!
+  customerAccountBalance: Int!
+}
+
+enum StripeProduct {
+  telehealth_per_minute
+  telehealth_per_call
+  recording_per_minute
+  recording_per_call
+  scheduling_per_location
+}
+
+enum SubscriptionCategory {
+  transactional
+  prepaid
+}
+
+type SubscriptionPlan {
+  id: ID!
+  externalDisplayName: String
+  externalDescription: String
+  internalDescription: String
+  pricePerUnit: Int
+  billingUnitDivisor: Int
+  billingMonthInterval: Int
+  product: Product
+  mostRecentBillableQuantity: Int
+  billableQuantityLastUpdatedAt: DateTime
+}
+
+type SuccessfulResponse {
+  result: Boolean
+}
+
+type SuccessMessage {
+  success: Boolean
+}
+
+type SuccessOutput {
+  success: Boolean
+}
+
+enum TelehealthSubscriptionBillingUnitEnum {
+  call
+  minute
+}
+
+type TelehealthSubscriptionPlan {
+  id: ID!
+  planName: String!
+  description: String
+  billingUnit: TelehealthSubscriptionBillingUnitEnum
+  billingUnitDivisor: Int
+  billingMonthInterval: Int
+}
+
+type TestTokenOutput {
+  token: String!
+}
+
+input TestTokenQueryInput {
+  uid: ID!
+  userType: VideoRoomUserTypeEnum
+}
+
+enum TherapySpecialtyOption {
+  hand_or_upper_extremity
+  pediatrics
+  pelvic_floor
+  vestibular
+  lymphedema
+  neuro
+  lsvt_loud
+  concussion
+  wheelchair
+  lsvt_big
+}
+
+enum TherapyTypeOption {
+  physical_therapy
+  occupational_therapy
+  speech
+}
+
+input ToggleContactArchiveStatusInput {
+  contactId: ID!
+  isArchived: Boolean!
+}
+
+type TraditionalSubscriptionPlan {
+  id: ID!
+  planName: String!
+  price: Int!
+  isCustom: Boolean
+  billingMonthInterval: Int
+}
+
+input TriggerUploadCsvInput {
+  csvUploadUrlId: ID!
+}
+
+type TriggerUploadCsvResponse {
+  success: Boolean!
+}
+
+""" The input necessary to update an Appointment with a Case"""
+input UpdateAppointment {
+  appointmentId: ID!
+  caseId: ID!
+}
+
+input UpdateAppointmentConfirmationStatusInput {
+  appointmentId: ID!
+  confirmationStatus: ConfirmOrDenyStatus
+  employeeId: ID
+  confirmedTime: DateTime
+  denialReason: String
+  denialExplanation: String
+}
+
+input UpdateAppointmentStartTimeInput {
+  appointmentId: ID!
+  startTime: DateTime!
+  employeeId: ID
+}
+
+input UpdateAppointmentTypeEMRId {
+  appointmentTypeId: ID!
+  emrAppointmentTypeId: String!
+}
+
+input UpdateAppointmentTypeInput {
+  appointmentTypeId: ID!
+  displayName: String
+  duration: Int
+  interval: Int
+  customFormTemplate: JSONObject
+  customFormUISchemaTemplate: JSONObject
+  isActive: Boolean
+  legacyIsInitialEval: Boolean
+  shouldRequireManualInsurance: Boolean
+  shouldHideProviderOption: Boolean
+  shouldHideFinalCheckbox: Boolean
+}
+
+input UpdateArchivePlanForTransactionalSubscriptionInput {
+  companyId: ID!
+  archivePlanId: ID!
+}
+
+input UpdateBookingFlow {
+  companyId: ID!
+  askMedicare: Int
+  askPostOp: Int
+  askSecondaryInsurance: Int
+  askReturningPatient: Int
+  askPatientAddress: Int
+  askPreferredPatientContact: Int
+  askMarketingSource: Int
+  askWorkersCompOrMVA: Int
+  shouldSkipInsurancePage: Boolean
+  shouldUsePrecheck: Boolean
+}
+
+input UpdateCarrierInput {
+  carrierId: ID!
+  name: String
+  cardRank: Int
+  cardImageURL: String
+  cardDisplayText: String
+}
+
+input UpdateClinicBookingConfigInput {
+  clinicId: ID!
+  nonIntegratedInterval: Int
+  isTelehealthActive: Boolean
+  hours: ClinicHoursInput
+  videoHours: ClinicHoursInput
+  isSMSBetaParticipant: Boolean
+}
+
+input UpdateClinicHoursOfOperationInput {
+  clinicId: ID!
+  hours: ClinicHourSlotsInput
+}
+
+input UpdateClinicInput {
+  clinicId: ID!
+  clinicName: String
+  phone: String
+  fax: String
+  email: String
+  about: String
+  npi: String
+  useClinicName: Boolean
+  notificationEmail: String
+  forwardingNumber: String
+  cancellationPolicy: String
+  visibleWithoutSub: Boolean
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+  insuranceLastReviewDate: String
+  isOutOfNetworkOnly: Boolean
+  hasAlternateTimeUI: Boolean
+  isInsuranceBetaParticipant: Boolean
+  twitterUrl: String
+  instagramUrl: String
+  facebookUrl: String
+  isTemporarilyClosed: Boolean
+  patientConsentFormUrl: String
+  physicalTherapySpecialtyOptions: [TherapySpecialtyOption]
+  therapyTypeOptions: [TherapyTypeOption]
+  timeZone: String
+  isBetterAccessOnly: Boolean
+  shouldUseBABookingFlow: Boolean
+  isAppointmentCancellationAllowed: Boolean
+  hoursOfOperationNotes: String
+  shouldUseProviderSchedule: Boolean
+  shouldUseAutoconfirmedAppointments: Boolean
+}
+
+input UpdateClinicIntegrationConfigurationInput {
+  clinicId: ID!
+  integrationDuration: Int!
+  integrationInterval: Int!
+  integrationFollowupDuration: Int!
+  integrationFollowupInterval: Int!
+}
+
+input UpdateClinicIntegrationDetailsInput {
+  clinicId: ID!
+  emrId: String
+  webPTFacilityId: String
+  kno2Address: String
+}
+
+input UpdateClinicNotificationSettingsInput {
+  clinicId: ID!
+  shouldDisableInPersonReminderEmails: Boolean
+}
+
+input UpdateClinicSMSConfigInput {
+  clinicId: ID!
+  smsPhoneNumber: String
+}
+
+input UpdateClinicSpecialBillingStatusInput {
+  clinicId: ID!
+  isHSSAffiliate: Boolean!
+  isOnTraditionalPilot: Boolean!
+  externalBillingPartner: ExternalBillingPartner
+}
+
+input UpdateClinicTelehealthOptionInput {
+  clinicId: ID!
+  isTelehealthActive: Boolean!
+}
+
+input UpdateClinicWebPTSchedulingLinkInput {
+  clinicId: ID!
+}
+
+input UpdateCompanyArchiveOptionInput {
+  companyId: ID!
+  isArchiveOptionActive: Boolean!
+}
+
+input UpdateCompanyBillingContactInput {
+  companyId: ID!
+  primaryBillingContactEmail: String!
+  primaryBillingContactFirstName: String
+  primaryBillingContactLastName: String
+}
+
+input UpdateCompanyBillingDetailsForAdminInput {
+  companyId: ID!
+  totalNumberOfClinicsOwned: Int
+  billingPartnership: String
+  pricingCategory: String
+  isAllowedToAddHSSClinics: Boolean
+  billingPackage: CompanyBillingPackage
+  size: CompanySizeForBilling
+  companyType: CompanyTypeForBilling
+  percentFromBaseline: Int
+}
+
+input UpdateCompanyCreditCardInput {
+  companyId: ID!
+  stripeToken: String!
+  cardLastFourDigit: String!
+  cardholderName: String!
+}
+
+input UpdateCompanyDialogHealthConfigInput {
+  companyId: ID!
+  dialogHealthId: String!
+}
+
+input UpdateCompanyInput {
+  companyId: ID!
+  companyName: String
+  email: String
+  phone: String
+  website: String
+  bookingFlowRedirectURL: String
+  bookingFlowHex: String
+  isBookingFlowButtonBlack: Boolean
+  isUsingTableau: Boolean
+  hasBeenApproved: Boolean
+  telehealthPolicyText: String
+  emrName: String
+  videoHours: UpdateCompanyVideoHoursInput
+  taxId: String
+  healthcareVertical: HealthcareVertical
+  betterAccessMigrationStatus: BetterAccessMigrationStatus
+  externalDataPlatformLink: String
+}
+
+input UpdateCompanyIntegrationConfigurationInput {
+  companyId: ID!
+  integrationDuration: Int!
+  integrationInterval: Int!
+  integrationFollowupDuration: Int!
+  integrationFollowupInterval: Int!
+  kno2Address: String
+}
+
+input UpdateCompanyRaintreeCredentialsInput {
+  companyId: ID!
+  clientId: String!
+  clientSecret: String!
+}
+
+input UpdateCompanyReviewConfigInput {
+  companyId: ID!
+  isTelehealthReviewCollectionActive: Boolean
+  isInFacilityReviewCollectionActive: Boolean
+}
+
+input UpdateCompanyTelehealthConfig {
+  companyId: ID!
+  shouldAutoStartRecording: Boolean
+  shouldUseRecordingCopyForConsent: Boolean
+  shouldRemoveCallLengthLimit: Boolean
+  shouldAllowSecondaryProvider: Boolean
+  shouldRedirectPatientEmailToSecondaryProvider: Boolean
+  shouldSendPatientActionableReminder: Boolean
+}
+
+input UpdateCompanyTelehealthPlanInput {
+  companyId: ID!
+  telehealthPlanId: ID!
+  isInvoiceBillingActiveForTransactionalSub: Boolean!
+  transactionalInvoiceDaysToPay: Int
+}
+
+input UpdateCompanyVideoHoursInput {
+  mondayOpen: Int
+  mondayClose: Int
+  tuesdayOpen: Int
+  tuesdayClose: Int
+  wednesdayOpen: Int
+  wednesdayClose: Int
+  thursdayOpen: Int
+  thursdayClose: Int
+  fridayOpen: Int
+  fridayClose: Int
+  saturdayOpen: Int
+  saturdayClose: Int
+  sundayOpen: Int
+  sundayClose: Int
+}
+
+input UpdateCompanyWebPTReachConfigInput {
+  companyId: ID!
+  isWebPTReachLeadSyncingActive: Boolean
+  webPTReachAPIKey: String
+}
+
+input UpdateContactInput {
+  contactId: ID!
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  dateOfBirth: Date
+  secondaryDescription: String
+  secondaryPhone: String
+  secondaryEmail: String
+}
+
+input UpdateConversationInput {
+  id: ID!
+  patientName: String!
+}
+
+input UpdateEmployeeAgreementInput {
+  employeeId: ID!
+  acceptEmployeeTOS: Boolean
+  acceptEmployeePrivacy: Boolean
+}
+
+input UpdateEmployeeEmailInput {
+  employeeId: ID!
+  email: String
+}
+
+input UpdateEmployeeHoursAtClinicInput {
+  employeeId: ID!
+  clinicId: ID!
+  hours: EmployeeHourSlotsAtClinicInput
+}
+
+input UpdateEmployeeInput {
+  employeeId: ID!
+  degreeOrCertification: String
+  firstName: String
+  lastName: String
+  gender: String
+  yearsExperience: String
+  bio: String
+  phone: String
+  isUsingTableau: Boolean
+  alternateTelehealthContactEmail: String
+  customAppointmentSearchTemplate: JSONObject
+  customTelehealthSearchTemplate: JSONObject
+}
+
+input UpdateEmployeeIntegrationDetailsInput {
+  employeeId: ID!
+  emrId: String!
+  isActivelySyncing: Boolean!
+}
+
+input UpdateEmployeeRoleInput {
+  employeeId: ID!
+  role: String
+}
+
+input UpdateNetworkInput {
+  networkId: ID!
+  displayName: String
+  category: NetworkCategoriesEnum
+  about: String
+  companyId: ID
+}
+
+input UpdateNotificationEmailInput {
+  clinicId: ID!
+  email: String!
+}
+
+input UpdatePatientReviewInput {
+  reviewId: ID!
+  isApproved: Boolean!
+  editedComment: String
+  editReason: String
+}
+
+input UpdatePlanInput {
+  planId: ID!
+  planName: String!
+}
+
+input UpdateVideoAppointmentConfirmationStatusInput {
+  videoAppointmentId: ID!
+  confirmationStatus: VideoConfirmationUpdateStatus!
+  employeeId: ID
+  denialReason: String
+  denialExplanation: String
+}
+
+""" updates a video appointment based on appointment ID"""
+input UpdateVideoAppointmentDetailsInput {
+  videoAppointmentId: ID!
+  providerNote: String
+}
+
+""" updates a video appointment based on appointment ID"""
+input UpdateVideoAppointmentInput {
+  videoAppointmentId: ID!
+  confirmationStatus: VideoConfirmationStatus
+  providerEmail: String
+  providerLink: String
+  patientLink: String
+}
+
+""" updates a video appointment based on appointment ID"""
+input UpdateVideoAppointmentRecurringSeriesInput {
+  videoAppointmentId: ID!
+  shouldCancelRecurringSeries: Boolean
+}
+
+input UpdateVideoAppointmentStartTimeInput {
+  videoAppointmentId: ID!
+  startTime: DateTime!
+  providerEmail: String
+  shouldKeepRecurringSeriesWithPreviousStartTime: Boolean
+}
+
+input UploadCsvInput {
+  filename: String!
+  mimetype: String!
+  companyId: ID!
+  entityToUpload: csvUploadEntity!
+}
+
+type UploadCsvResponse {
+  csvUploadUrl: String!
+  csvUploadUrlId: ID!
+}
+
+type UploadedFileResponse {
+  filename: String!
+  mimetype: String!
+  url: String!
+}
+
+union User = Employee | Patient
+
+""" A VideoAppointment represents an appointment with a clinic. """
+type VideoAppointment {
+  id: ID!
+  uid: String
+  appointmentStatus: NewAppointmentStatus
+  status: VideoAppointmentStatus
+  confirmationStatus: VideoConfirmationStatus
+  startTime: DateTime!
+  createdAt: DateTime!
+  isDirectAccess: Boolean
+  isInitialEval: Boolean
+  referredBy: String
+  conditionId: ID
+  patientId: ID
+  employeeId: ID
+  clinicId: ID
+  companyId: ID
+  contactId: ID
+  condition: Condition
+  clinic: PublicClinic
+  patient: Patient
+  employee: Employee
+  therapist: PublicTherapist
+  providerEmail: String
+  providerLink: String
+  patientLink: String
+  confirmedAt: String
+  patientEmail: String
+  patientFirstName: String
+  patientLastName: String
+  videoSessionId: String
+  videoRoomId: ID
+  patientAcceptedConsentForm: Boolean
+  patientAcceptedConsentFormAt: DateTime
+  previousStartTime: DateTime
+  originalStartTime: DateTime
+  patientPhoneNumber: String
+  hasPatientPhoneBeenValidated: Boolean
+  isPhoneMobile: Boolean
+  wasRequested: Boolean
+  patientDuration: Int
+  providerDuration: Int
+  isRecordingAvailable: Boolean
+  didPatientAttend: Boolean
+  didProviderAttend: Boolean
+  contact: Contact
+  internalVideoRoom: InternalVideoRoom
+  providerNote: String
+  providerNoteLastEditedAt: DateTime
+  providerNoteLastEditorId: ID
+  providerNoteLastEditor: Employee
+  patientFirstEnterCallAt: DateTime
+  patientLastExitCallAt: DateTime
+  providerFirstEnterCallAt: DateTime
+  providerLastExitCallAt: DateTime
+  secondaryProviderId: ID
+  secondaryProvider: Employee
+  patientStarRating: Int
+  providerStarRating: Int
+  patientComment: String
+  providerComment: String
+  patientActionableReminderStatus: String
+  patientActionableReminderSentAt: DateTime
+  cancelledAt: DateTime
+  wasCreatedWithSecondaryContact: Boolean
+  recurringSeries: RecurringSeries
+  denialReason: String
+  denialExplanation: String
+  appointmentTypeId: ID
+  appointmentType: CompanyAppointmentType
+  customFormResponse: JSONObject
+  hasPatientBeenContacted: Boolean
+  patientContactedAt: DateTime
+  patientContactedByEmployee: Employee
+  patientContactedByEmployeeId: ID
+  lastActivityLog: ActivityLog
+  activityLogs: [ActivityLog]!
+}
+
+input VideoAppointmentActivityLogsInput {
+  videoAppointmentId: ID!
+}
+
+type VideoAppointmentProviderEmailOutput {
+  result: [String]
+}
+
+""" The input needed for patient to request a video appointment  """
+input VideoAppointmentRequestInput {
+  clinicId: ID!
+  appointmentTypeId: ID!
+  startTime: DateTime!
+  providerId: ID
+  availabilitySpanId: ID
+  customFormResponse: JSONObject
+  isDirectAccess: Boolean
+  referredBy: String
+}
+
+input VideoAppointmentsInput {
+  limit: Int! = 10
+  offset: Int! = 0
+  start: Date
+  end: Date
+  order: Order! = DESC
+  query: String
+  clinicIds: [ID]
+  employeeIds: [ID]
+  contactIds: [ID]
+  status: VideoAppointmentStatus
+  confirmationStatus: VideoConfirmationStatus
+  companyId: ID
+  didPatientAttend: Boolean
+  didProviderAttend: Boolean
+  hasSecondaryProvider: Boolean
+  patientId: ID
+  statuses: [VideoAppointmentStatus]
+  confirmationStatuses: [VideoConfirmationStatus]
+  appointmentStatuses: [NewAppointmentStatus]
+  createdAtStart: Date
+  createdAtEnd: Date
+  appointmentTypeIds: [ID]
+}
+
+""" Output type of the Company.videoAppointments"""
+type VideoAppointmentsOutput {
+  result: [VideoAppointment]
+  pager: ListPager
+}
+
+""" The status of the appointment. """
+enum VideoAppointmentStatus {
+  booked
+  cancelled
+  completed
+  noshow
+}
+
+""" The confirmation status of the appointment. """
+enum VideoConfirmationStatus {
+  pending
+  confirmed
+  denied
+}
+
+enum VideoConfirmationUpdateStatus {
+  confirmed
+  denied
+}
+
+type VideoRoom {
+  id: ID!
+  uid: ID!
+  sessionId: String!
+  testSessionId: String
+  timeZone: String!
+  displayName: String
+  startTime: DateTime!
+  clinicId: ID
+  clinic: PublicClinic
+  partnerId: String
+  patientToken: String
+  providerToken: String
+  recordingStartedAt: DateTime
+  videoRoomTermsAndConditionsURL: String
+  hasUnlimitedSessionLength: Boolean
+  isSessionCompleted: Boolean
+}
+
+enum VideoRoomUserEventType {
+  patientConnect
+  patientDisconnect
+  providerConnect
+  providerDisconnect
+  patientReview
+  providerReview
+  patientPreCallTest
+  providerPreCallTest
+}
+
+enum VideoRoomUserTypeEnum {
+  patient
+  provider
+}
+
+enum VideoUserType {
+  patient
+  provider
+}

@@ -1,0 +1,64 @@
+{
+  "data": {
+    "employee": {
+      "id": "1",
+      "firstName": "Example",
+      "lastName": "Provider 1",
+      "role": "admin",
+      "isTherapist": true,
+      "email": "example+provider1@betterpt.com",
+      "phone": "9999999999",
+      "hasValidatedMobileNumber": false,
+      "hasLoggedIn": true,
+      "gender": "M",
+      "smallProfileImgUrl": "https://s3.amazonaws.com/company-public-images-development/employees/235/avatars/small-1602017524325.png",
+      "hasEmailInviteBeenSent": true,
+      "lastEmailInviteSentAt": "2020-05-20T17:25:55.843Z",
+      "bio": "",
+      "degreeOrCertification": "",
+      "yearsExperience": null,
+      "isManagedViaYext": false,
+      "alternateTelehealthContactEmail": null,
+      "appointmentTypes": [
+        {
+          "id": "1",
+          "companyId": "1",
+          "isActive": true,
+          "displayName": "In-Person Initial Evaluation",
+          "duration": 60,
+          "interval": 15,
+          "medium": "inClinic",
+          "__typename": "CompanyAppointmentType"
+        },
+        {
+          "id": "2",
+          "companyId": "1",
+          "isActive": true,
+          "displayName": "Telehealth Apt type",
+          "duration": 60,
+          "interval": 15,
+          "medium": "telehealth",
+          "__typename": "CompanyAppointmentType"
+        }
+      ],
+      "clinics": [
+        {
+          "id": "1",
+          "clinicName": "Example Clinic 1",
+          "displayName": "Example Clinic 1",
+          "isTelehealthActive": true,
+          "timeZone": "America/New_York",
+          "location": {
+            "id": "1",
+            "address": "25 West 36th Street",
+            "city": "New York",
+            "state": "NY",
+            "__typename": "Location"
+          },
+          "__typename": "Clinic"
+        }
+      ],
+      "__typename": "Employee"
+    }
+  }
+}

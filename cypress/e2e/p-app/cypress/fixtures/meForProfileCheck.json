@@ -1,0 +1,15 @@
+{
+  "data": {
+    "me": {
+      "id": "1",
+      "firstName": "Example",
+      "role": "owner",
+      "company": {
+        "id": "1",
+        "companyName": "Example Company",
+        "__typename": "Company"
+      },
+      "__typename": "Employee"
+    }
+  }
+}

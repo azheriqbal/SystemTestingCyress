@@ -1,0 +1,132 @@
+{
+  "data": {
+    "me": {
+      "id": "1",
+      "firstName": "Example",
+      "lastName": "Provider",
+      "gender": "M",
+      "acceptEmployeeTOS": true,
+      "acceptEmployeePrivacy": true,
+      "isTherapist": true,
+      "email": "example+provider@betterpt.com",
+      "phone": "8888888888",
+      "hasValidatedMobileNumber": false,
+      "profileImgUrl": "https://s3.amazonaws.com/company-public-images-development/employees/25/avatars/large-1612301244945.png",
+      "role": "owner",
+      "bio": "I am example PT",
+      "yearsExperience": "1980-09-01",
+      "degreeOrCertification": "Degree in PT",
+      "customSearchTemplates": {
+        "traditionalAppointmentSearchTemplate": null,
+        "telehealthAppointmentSearchTemplate": {
+          "default": "?appointmentStatuses=Completed&start=2022-01-01&end=2022-12-31&dateOrder=DESC&timeDisplayValue=this+year&createdAtStart=2022-03-09&createdAtEnd=2022-04-08&createdTimeDisplayValue=last+30+days&clinicIds=&employeeIds="
+        },
+        "__typename": "CustomAppointmentSearchTemplates"
+      },
+      "clinics": [
+        {
+          "id": "1",
+          "clinicName": "Example Clinic 1",
+          "displayName": "Example Clinic 1",
+          "isTelehealthActive": true,
+          "betterPTSubscriptionActive": true,
+          "timeZone": "America/New_York",
+          "isBetterAccessOnly": true,
+          "isIntegrated": false,
+          "location": {
+            "id": "1",
+            "address": "123 Fake Street",
+            "city": "New York",
+            "state": "NY",
+            "__typename": "Location"
+          },
+          "__typename": "Clinic"
+        },
+        {
+          "id": "2",
+          "clinicName": "Example Clinic 2",
+          "displayName": "Example Clinic 2",
+          "isTelehealthActive": true,
+          "betterPTSubscriptionActive": true,
+          "timeZone": "America/New_York",
+          "isBetterAccessOnly": true,
+          "isIntegrated": false,
+          "location": {
+            "id": "2",
+            "address": "25 West 36th Street",
+            "city": "New York",
+            "state": "NY",
+            "__typename": "Location"
+          },
+          "__typename": "Clinic"
+        },
+        {
+          "id": "3",
+          "clinicName": "Example Clinic 3",
+          "displayName": "Example Clinic 3",
+          "isTelehealthActive": false,
+          "betterPTSubscriptionActive": false,
+          "timeZone": "America/New_York",
+          "isBetterAccessOnly": true,
+          "isIntegrated": false,
+          "location": {
+            "id": "3",
+            "address": "630 Prospect Street",
+            "city": "Brooklyn",
+            "state": "NY",
+            "__typename": "Location"
+          },
+          "__typename": "Clinic"
+        }
+      ],
+      "company": {
+        "id": "1",
+        "companyName": "Example Company",
+        "phone": "999-999-9999",
+        "email": "example+company@betterpt.com",
+        "website": "https://www.example.com",
+        "avatarUrl": "https://s3.amazonaws.com/company-public-images-development/companies/18/avatars/large-1612301273060.png",
+        "smallAvatarUrl": "https://s3.amazonaws.com/company-public-images-development/companies/18/avatars/small-1612301273060.png",
+        "shouldFacilityDefaultToServiceArea": false,
+        "shouldPreventNewAdminEmployees": false,
+        "shouldPreventNewBasicEmployees": false,
+        "shouldNewEmployeesDefaultToProvider": false,
+        "shouldRequirePhoneForNewContacts": false,
+        "shouldRemoveCallLengthLimit": false,
+        "healthcareVertical": "physical_therapy",
+        "providerAppId": null,
+        "betterAccessMigrationStatus": "inProgress",
+        "externalDataPlatformLink": null,
+        "hasIntegration": true,
+        "location": {
+          "id": "1",
+          "address": "123 Fake Street",
+          "city": "New York",
+          "state": "NY",
+          "zipcode": "10016",
+          "__typename": "Location"
+        },
+        "telehealthConfig": {
+          "id": "1",
+          "shouldAllowSecondaryProvider": false,
+          "shouldRedirectPatientEmailToSecondaryProvider": false,
+          "__typename": "CompanyTelehealthConfig"
+        },
+        "appointmentTypes": [
+          {
+            "id": "1",
+            "companyId": "1",
+            "isActive": false,
+            "displayName": "In-Person Initial Evaluation",
+            "duration": 60,
+            "interval": 15,
+            "medium": "inClinic",
+            "__typename": "CompanyAppointmentType"
+          }
+        ],
+        "__typename": "Company"
+      },
+      "__typename": "Employee"
+    }
+  }
+}

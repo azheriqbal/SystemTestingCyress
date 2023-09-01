@@ -1,0 +1,80 @@
+{
+  "data": {
+    "videoAppointments": {
+      "result": [
+        {
+          "id": "1",
+          "startTime": "2021-08-17T20:20:00.000Z",
+          "createdAt": "2021-08-09T21:16:34.300Z",
+          "wasRequested": null,
+          "status": "booked",
+          "confirmationStatus": "confirmed",
+          "employeeId": "270",
+          "providerEmail": "example+provider@betterpt.com",
+          "patientFirstName": "Example",
+          "patientLastName": "Last",
+          "patientEmail": "example+patient@betterpt.com",
+          "patientPhoneNumber": "2131231231",
+          "providerLink": "https://meet.development.betterpt.com/room/y564U8qpyobV_RYrSJTMe?code=zDQTe9C&type=provider",
+          "patientLink": "https://meet.development.betterpt.com/room/y564U8qpyobV_RYrSJTMe?code=UBN5_8x&type=patient",
+          "isRecordingAvailable": null,
+          "providerDuration": null,
+          "patientDuration": null,
+          "patientAcceptedConsentForm": null,
+          "patientAcceptedConsentFormAt": null,
+          "didPatientAttend": false,
+          "didProviderAttend": false,
+          "patientActionableReminderStatus": null,
+          "patientActionableReminderSentAt": null,
+          "appointmentStatus": "Upcoming",
+          "wasCreatedWithSecondaryContact": false,
+          "customFormResponse": null,
+          "employee": {
+            "id": "1",
+            "firstName": "example",
+            "lastName": "last",
+            "email": "example@betterpt.com",
+            "phone": "9084091611",
+            "__typename": "Employee"
+          },
+          "secondaryProvider": null,
+          "clinic": {
+            "id": "1",
+            "clinicName": "example clinic",
+            "internalDisplayName": "Example 1",
+            "timeZone": "America/New_York",
+            "isBetterAccessOnly": true,
+            "__typename": "PublicClinic"
+          },
+          "patient": null,
+          "contact": {
+            "id": "1",
+            "firstName": "example",
+            "lastName": "contact",
+            "email": "example-contact@betterpt.com",
+            "phone": "2131231231",
+            "dateOfBirth": "1987-11-10",
+            "hasValidatedMobileNumber": false,
+            "clinicId": "1",
+            "secondaryDescription": null,
+            "secondaryEmail": null,
+            "secondaryPhone": null,
+            "hasValidatedSecondaryMobileNumber": false,
+            "__typename": "Contact"
+          },
+          "recurringSeries": null,
+          "appointmentType": null,
+          "__typename": "VideoAppointment"
+        }
+      ],
+      "pager": {
+        "limit": 12,
+        "offset": 0,
+        "count": 1,
+        "total": 1,
+        "__typename": "ListPager"
+      },
+      "__typename": "VideoAppointmentsOutput"
+    }
+  }
+}

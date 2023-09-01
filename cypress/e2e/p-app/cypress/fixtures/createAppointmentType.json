@@ -1,0 +1,17 @@
+{
+  "data": {
+    "createAppointmentType": {
+      "id": "1",
+      "companyId": "1",
+      "isActive": true,
+      "displayName": "Example Appointment Type",
+      "duration": 60,
+      "interval": 60,
+      "medium": "inClinic",
+      "shouldHideProviderOption": false,
+      "legacyIsInitialEval": true,
+      "shouldRequireManualInsurance": true,
+      "__typename": "CompanyAppointmentType"
+    }
+  }
+}

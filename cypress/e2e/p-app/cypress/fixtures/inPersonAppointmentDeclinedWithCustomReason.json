@@ -1,0 +1,87 @@
+{
+  "data": {
+    "appointment": {
+      "id": "3",
+      "status": "booked",
+      "confirmationStatus": "denied",
+      "appointmentStatus": "Declined",
+      "startTime": "2021-08-11T13:00:00.000Z",
+      "createdAt": "2021-07-26T16:28:38.386Z",
+      "isDirectAccess": null,
+      "isInitialEval": null,
+      "timeZone": "America/New_York",
+      "referredBy": null,
+      "confirmedTime": null,
+      "hasPatientBeenContacted": null,
+      "patientContactedAt": null,
+      "employeeTherapistId": null,
+      "clinicId": "1",
+      "patientId": "1",
+      "patient": {
+        "id": "1",
+        "firstName": "Example",
+        "lastName": "Person",
+        "email": "example+patient@betterpt.com",
+        "phone": "8888888888",
+        "__typename": "Patient"
+      },
+      "contact": {
+        "id": "1",
+        "firstName": "Example",
+        "lastName": "Person",
+        "email": "example+patient@betterpt.com",
+        "phone": "8888888888",
+        "dateOfBirth": "1989-04-26",
+        "hasValidatedMobileNumber": false,
+        "__typename": "Contact"
+      },
+      "conditionId": null,
+      "condition": null,
+      "otherExplanation": null,
+      "isMedicare": null,
+      "isPostOp": null,
+      "medicalProcedureDate": null,
+      "isFirstTimeAtClinic": null,
+      "marketingQuestionResponse": null,
+      "clinic": {
+        "id": "1",
+        "clinicName": "Example Clinic",
+        "timeZone": "America/New_York",
+        "isBetterAccessOnly": true,
+        "__typename": "PublicClinic"
+      },
+      "employee": null,
+      "hasPossibleLead": false,
+      "alternateTime1": null,
+      "alternateTime2": null,
+      "alternateTimesExpireAt": null,
+      "alternateTimeResponseStatus": null,
+      "isForWorkersCompOrMVA": null,
+      "isSMSEligible": false,
+      "denialReason": "other",
+      "denialExplanation": "custom reason",
+      "hssRegion": null,
+      "physicalTherapySpecialty": null,
+      "therapyType": null,
+      "previousStartTime": null,
+      "originalStartTime": null,
+      "wasRequested": true,
+      "patientActionableReminderStatus": null,
+      "customFormResponse": null,
+      "appointmentType": {
+        "id": "52",
+        "displayName": "In-Person Speech Initial Evaluation",
+        "medium": "inClinic",
+        "__typename": "CompanyAppointmentType"
+      },
+      "assignedEmployeeId": "2",
+      "assignedEmployee": {
+        "id": "2",
+        "firstName": "Example",
+        "lastName": "Provider 2",
+        "__typename": "Employee"
+      },
+      "__typename": "Appointment"
+    }
+  }
+}

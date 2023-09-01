@@ -1,0 +1,24 @@
+{
+  "data": {
+    "companyListOptions": [
+      {
+        "id": "1",
+        "name": "Example Clinic 1",
+        "timeZone": "America/New_York",
+        "__typename": "CompanyListOption"
+      },
+      {
+        "id": "2",
+        "name": "Example Clinic 2",
+        "timeZone": "America/New_York",
+        "__typename": "CompanyListOption"
+      },
+      {
+        "id": "3",
+        "name": "Example Clinic 3",
+        "timeZone": "America/New_York",
+        "__typename": "CompanyListOption"
+      }
+    ]
+  }
+}

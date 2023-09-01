@@ -1,0 +1,19 @@
+{
+  "data": {
+    "company": {
+      "id": "1",
+      "bookingFlow": {
+        "askMedicare": 1,
+        "askPostOp": 1,
+        "askSecondaryInsurance": 0,
+        "askReturningPatient": 0,
+        "askPatientAddress": 1,
+        "askPreferredPatientContact": 1,
+        "askMarketingSource": 1,
+        "askWorkersCompOrMVA": 0,
+        "__typename": "BookingFlow"
+      },
+      "__typename": "Company"
+    }
+  }
+}

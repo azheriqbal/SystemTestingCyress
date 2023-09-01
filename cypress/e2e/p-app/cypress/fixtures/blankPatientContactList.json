@@ -1,0 +1,15 @@
+{
+  "data": {
+    "contacts": {
+      "result": [],
+      "pager": {
+        "limit": 20,
+        "offset": 0,
+        "count": 0,
+        "total": 0,
+        "__typename": "ListPager"
+      },
+      "__typename": "ContactsOutput"
+    }
+  }
+}

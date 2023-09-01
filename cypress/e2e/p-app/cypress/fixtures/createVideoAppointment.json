@@ -1,0 +1,8 @@
+{
+  "data": {
+    "createVideoAppointment": {
+      "id": "1",
+      "__typename": "VideoAppointment"
+    }
+  }
+}

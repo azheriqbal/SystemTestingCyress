@@ -1,0 +1,160 @@
+{
+  "data": {
+    "inPersonAppointments": {
+      "result": [
+        {
+          "id": "1",
+          "status": "booked",
+          "confirmationStatus": "confirmed",
+          "appointmentStatus": "Upcoming",
+          "startTime": "2021-08-19T21:20:00.000Z",
+          "createdAt": "2021-08-05T17:07:05.195Z",
+          "wasRequested": false,
+          "timeZone": "America/New_York",
+          "confirmedTime": "2021-08-19T21:20:00.000Z",
+          "employeeTherapistId": "1",
+          "clinicId": "1",
+          "patientId": "1",
+          "isInitialEval": null,
+          "hasPatientBeenContacted": null,
+          "patientContactedAt": null,
+          "customFormResponse": null,
+          "patient": {
+            "id": "1",
+            "email": "example+patient@betterpt.com",
+            "firstName": "Example",
+            "lastName": "Patient",
+            "phone": "8888888888",
+            "__typename": "Patient"
+          },
+          "contact": {
+            "id": "1",
+            "firstName": "Example",
+            "lastName": "patient",
+            "email": "example+patient@betterpt.com",
+            "phone": "8888888888",
+            "dateOfBirth": null,
+            "hasValidatedMobileNumber": false,
+            "__typename": "Contact"
+          },
+          "clinic": {
+            "id": "1",
+            "clinicName": "Example Clinic",
+            "isBetterAccessOnly": true,
+            "timeZone": "America/New_York",
+            "__typename": "PublicClinic"
+          },
+          "employee": {
+            "id": "1",
+            "firstName": "Example",
+            "lastName": "Provider 1",
+            "email": "example+provider1@betterpt.com",
+            "phone": null,
+            "__typename": "Employee"
+          },
+          "alternateTime1": null,
+          "alternateTime2": null,
+          "alternateTimesExpireAt": null,
+          "alternateTimeResponseStatus": null,
+          "isSMSEligible": false,
+          "hssRegion": null,
+          "patientActionableReminderStatus": null,
+          "appointmentType": {
+            "id": "1",
+            "displayName": "In-Person Initial Evaluation",
+            "medium": "inClinic",
+            "__typename": "CompanyAppointmentType"
+          },
+          "assignedEmployeeId": "2",
+          "assignedEmployee": {
+            "id": "2",
+            "firstName": "Example",
+            "lastName": "Provider 2",
+            "__typename": "Employee"
+          },
+          "__typename": "Appointment"
+        },
+        {
+          "id": "2",
+          "status": "booked",
+          "confirmationStatus": "pending",
+          "appointmentStatus": "Requested",
+          "startTime": "2021-08-21T21:20:00.000Z",
+          "createdAt": "2021-08-06T17:07:05.195Z",
+          "wasRequested": false,
+          "timeZone": "America/New_York",
+          "confirmedTime": "2021-08-22T21:20:00.000Z",
+          "employeeTherapistId": "1",
+          "clinicId": "1",
+          "patientId": "1",
+          "isInitialEval": null,
+          "hasPatientBeenContacted": null,
+          "patientContactedAt": null,
+          "customFormResponse": null,
+          "patient": {
+            "id": "1",
+            "email": "example+patient@betterpt.com",
+            "firstName": "Example",
+            "lastName": "Patient",
+            "phone": "8888888888",
+            "__typename": "Patient"
+          },
+          "contact": {
+            "id": "1",
+            "firstName": "Example",
+            "lastName": "patient",
+            "email": "example+patient@betterpt.com",
+            "phone": "8888888888",
+            "dateOfBirth": null,
+            "hasValidatedMobileNumber": false,
+            "__typename": "Contact"
+          },
+          "clinic": {
+            "id": "1",
+            "clinicName": "Example Clinic",
+            "isBetterAccessOnly": true,
+            "timeZone": "America/New_York",
+            "__typename": "PublicClinic"
+          },
+          "employee": {
+            "id": "1",
+            "firstName": "Example",
+            "lastName": "Provider 1",
+            "email": "example+provider1@betterpt.com",
+            "phone": null,
+            "__typename": "Employee"
+          },
+          "alternateTime1": null,
+          "alternateTime2": null,
+          "alternateTimesExpireAt": null,
+          "alternateTimeResponseStatus": null,
+          "isSMSEligible": false,
+          "hssRegion": null,
+          "patientActionableReminderStatus": null,
+          "appointmentType": {
+            "id": "1",
+            "displayName": "In-Person Initial Evaluation",
+            "medium": "inClinic",
+            "__typename": "CompanyAppointmentType"
+          },
+          "assignedEmployeeId": "2",
+          "assignedEmployee": {
+            "id": "2",
+            "firstName": "Example",
+            "lastName": "Provider 2",
+            "__typename": "Employee"
+          },
+          "__typename": "Appointment"
+        }
+      ],
+      "pager": {
+        "limit": 10,
+        "offset": 0,
+        "count": 2,
+        "total": 2,
+        "__typename": "ListPager"
+      },
+      "__typename": "AppointmentsOutput"
+    }
+  }
+}

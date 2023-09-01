@@ -1,0 +1,45 @@
+{
+  "data": {
+    "me": {
+      "id": "1",
+      "role": "owner",
+      "company": {
+        "id": "1",
+        "betterAccessMigrationStatus": "inProgress",
+        "shouldRemoveCallLengthLimit": false,
+        "appointmentTypes": [
+          {
+            "id": "1",
+            "companyId": "1",
+            "isActive": true,
+            "displayName": "In-Person Initial Evaluation",
+            "duration": 60,
+            "interval": 15,
+            "medium": "inClinic",
+            "shouldHideProviderOption": false,
+            "legacyIsInitialEval": true,
+            "shouldHideFinalCheckbox": true,
+            "shouldRequireManualInsurance": true,
+            "__typename": "CompanyAppointmentType"
+          },
+          {
+            "id": "2",
+            "companyId": "1",
+            "isActive": true,
+            "displayName": "Telehealth Apt type",
+            "duration": 60,
+            "interval": 15,
+            "medium": "telehealth",
+            "shouldHideProviderOption": false,
+            "legacyIsInitialEval": false,
+            "shouldHideFinalCheckbox": true,
+            "shouldRequireManualInsurance": true,
+            "__typename": "CompanyAppointmentType"
+          }
+        ],
+        "__typename": "Company"
+      },
+      "__typename": "Employee"
+    }
+  }
+}

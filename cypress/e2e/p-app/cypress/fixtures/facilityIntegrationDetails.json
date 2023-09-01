@@ -1,0 +1,18 @@
+{
+  "data": {
+    "clinic": {
+      "id": "1",
+      "isIntegrated": false,
+      "integrationDetails": {
+        "integrationDuration": 50,
+        "integrationInterval": 30,
+        "integrationFollowupDuration": 55,
+        "integrationFollowupInterval": 25,
+        "canCancelRequests": true,
+        "shouldBlockCancellations": false,
+        "__typename": "ClinicIntegrationDetails"
+      },
+      "__typename": "Clinic"
+    }
+  }
+}

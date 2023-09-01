@@ -1,0 +1,30 @@
+{
+  "require-insurance-toggle": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "hours-of-operation-notes": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "final-checkbox-toggle": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "assign-appointments": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": false,
+    "variation": 0,
+    "version": 1
+  }
+}

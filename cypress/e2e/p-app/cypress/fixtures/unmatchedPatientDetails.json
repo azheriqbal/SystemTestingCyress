@@ -1,0 +1,33 @@
+{
+  "data": {
+    "patient": {
+      "id": "1",
+      "email": "example+patient@betterpt.com",
+      "insuranceCardFrontUrl": null,
+      "insuranceCardBackUrl": null,
+      "insuranceCarrier": "Carrier",
+      "insurancePlan": "Plan",
+      "insuranceMemberId": "W123456789",
+      "birthday": "1989-04-26",
+      "firstName": "Example",
+      "lastName": "Patient",
+      "phone": "8888888888",
+      "gender": "M",
+      "secondaryInsuranceCarrier": null,
+      "secondaryInsurancePlan": null,
+      "secondaryInsuranceMemberId": null,
+      "primaryAddress": {
+        "address": "25 West 36th Street",
+        "address2": "",
+        "city": "New York",
+        "state": "New York",
+        "zipcode": "10018",
+        "__typename": "PrimaryAddress"
+      },
+      "preferredContactMethod": "email",
+      "hasValidatedInsurance": null,
+      "contact": null,
+      "__typename": "Patient"
+    }
+  }
+}

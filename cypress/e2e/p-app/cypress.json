@@ -1,0 +1,8 @@
+{
+  "baseUrl": "http://localhost:8888",
+  "projectId": "oxq5hp",
+  "retries": {
+    "runMode": 2,
+    "openMode": 2
+  }
+}

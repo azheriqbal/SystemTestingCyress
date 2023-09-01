@@ -1,0 +1,20 @@
+{
+  "data": {
+    "updateAppointmentType": {
+      "id": "1",
+      "companyId": "1",
+      "isActive": true,
+      "displayName": "Legacy Initial Evaluation",
+      "duration": 30,
+      "interval": 10,
+      "medium": "inClinic",
+      "shouldHideProviderOption": true,
+      "customFormTemplate": null,
+      "customFormUISchemaTemplate": null,
+      "legacyIsInitialEval": false,
+      "shouldRequireManualInsurance": true,
+      "shouldHideFinalCheckbox": true,
+      "__typename": "CompanyAppointmentType"
+    }
+  }
+}
